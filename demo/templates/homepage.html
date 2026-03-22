@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Saudi ERP — The Complete ERP for Saudi Arabia</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Tajawal',sans-serif;color:#1a2332;background:#fff}
+a{text-decoration:none;color:inherit}
+:root{--g:#1a7a4e;--gd:#145f3d;--gl:#22a362;--gold:#c9a84c}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(15,25,35,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 40px;gap:20px;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;margin-right:auto}
+.nav-logo .logo-icon{width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff}
+.nav-logo .logo-name{font-size:17px;font-weight:700;color:#fff}
+nav a{font-size:13px;color:rgba(255,255,255,.7);padding:6px 12px;border-radius:6px;transition:.2s}
+nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-cta{background:var(--g)!important;color:#fff!important;font-weight:600!important;padding:7px 16px!important;border-radius:8px!important}
+.nav-cta:hover{background:var(--gl)!important}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1520 0%,#0f1923 40%,#0d2518 100%);min-height:100vh;display:flex;align-items:center;padding-top:64px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(26,122,78,.18) 0%,transparent 50%),radial-gradient(circle at 85% 20%,rgba(201,168,76,.1) 0%,transparent 40%)}
+.hero-inner{max-width:1200px;margin:0 auto;padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(26,122,78,.15);border:1px solid rgba(26,122,78,.3);color:#4ade80;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:20px}
+.hero h1{font-size:52px;font-weight:800;color:#fff;line-height:1.12;margin-bottom:10px}
+.hero h2{font-family:'Tajawal',Arial;font-size:26px;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:20px}
+.grad{background:linear-gradient(135deg,#22a362,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:28px;max-width:490px}
+.hero-btns{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.btn-primary{background:var(--g);color:#fff!important;padding:14px 24px;border-radius:10px;font-size:15px;font-weight:600;transition:.2s;display:inline-block}
+.btn-primary:hover{background:var(--gl);transform:translateY(-2px);box-shadow:0 8px 20px rgba(26,122,78,.4)}
+.btn-outline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)!important;padding:14px 24px;border-radius:10px;font-size:15px;font-weight:500;border:1px solid rgba(255,255,255,.15);transition:.2s;display:inline-block}
+.btn-outline:hover{background:rgba(255,255,255,.12)}
+.trust{display:flex;gap:18px;flex-wrap:wrap}
+.trust span{font-size:12px;color:rgba(255,255,255,.4)}
+
+/* Dashboard preview card */
+.preview-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:16px;overflow:hidden}
+.preview-topbar{background:rgba(255,255,255,.03);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.05)}
+.pbar-dots{display:flex;gap:5px}.pbar-dots span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18)}
+.pbar-title{font-size:12px;color:rgba(255,255,255,.4);margin-left:4px}
+.preview-sidebar{width:50px;background:rgba(15,25,35,.8);position:absolute;left:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:8px}
+.ps-ico{width:30px;height:30px;border-radius:6px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:13px}
+.ps-ico.active{background:var(--g)}
+.preview-body{display:flex;padding:0}
+.preview-content{flex:1;padding:12px}
+.p-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px}
+.p-kpi{background:rgba(255,255,255,.04);border-radius:7px;padding:8px;border:1px solid rgba(255,255,255,.06)}
+.p-kpi.g{border-top:2px solid var(--g)}.p-kpi.o{border-top:2px solid #f59e0b}.p-kpi.b{border-top:2px solid #3b82f6}.p-kpi.p{border-top:2px solid #8b5cf6}
+.p-kpi-v{font-size:13px;font-weight:700;color:#fff}.p-kpi-l{font-size:9px;color:rgba(255,255,255,.4)}
+.p-chart{background:rgba(255,255,255,.03);border-radius:7px;padding:8px;border:1px solid rgba(255,255,255,.06)}
+.p-chart-title{font-size:9px;color:rgba(255,255,255,.4);margin-bottom:6px}
+.chart-bars{display:flex;align-items:flex-end;gap:4px;height:40px}
+.cb{flex:1;border-radius:2px 2px 0 0;background:rgba(26,122,78,.35);transition:background .2s}
+.cb.hi{background:rgba(26,122,78,.8)}.cb:hover{background:rgba(26,122,78,.7)}
+
+/* FEATURES */
+.section{padding:80px 40px;max-width:1200px;margin:0 auto}
+.sec-hdr{text-align:center;margin-bottom:48px}
+.sec-hdr h2{font-size:34px;font-weight:700;margin-bottom:8px}
+.sec-hdr p{font-size:16px;color:#6b7a8d}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat{background:#fff;border-radius:12px;padding:28px;border:1px solid #e8ecf1;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.feat:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:var(--g)}
+.feat-ico{font-size:38px;margin-bottom:14px}
+.feat h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.feat p{font-size:13px;color:#6b7a8d;line-height:1.65}
+
+/* PRICING */
+.pricing-section{background:#f8faf8;padding:80px 40px}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.plan-card{background:#fff;border:2px solid #e8ecf1;border-radius:16px;overflow:hidden;transition:.2s}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.plan-card.pop{border-color:var(--g);box-shadow:0 4px 20px rgba(26,122,78,.12);transform:scale(1.03)}
+.plan-top-badge{background:var(--g);color:#fff;text-align:center;font-size:11px;font-weight:600;padding:5px}
+.plan-body{padding:24px}
+.plan-ico{font-size:28px;margin-bottom:10px}
+.plan-name{font-size:17px;font-weight:700;margin-bottom:8px}
+.plan-price{font-size:28px;font-weight:800;color:var(--g);margin-bottom:4px}
+.plan-price span{font-size:13px;color:#9aa8b8;font-weight:400}
+.plan-period{font-size:12px;color:#9aa8b8;margin-bottom:16px}
+.plan-feats{margin-bottom:20px}
+.plan-feats li{font-size:13px;color:#6b7a8d;padding:5px 0;border-bottom:1px solid rgba(232,236,241,.6);list-style:none}
+.plan-feats li:last-child{border:none}
+.plan-feats li.incl{color:#1a7a4e}
+.btn-plan{display:block;padding:11px;border-radius:8px;font-size:14px;font-weight:600;text-align:center;background:#f4f6f9;color:#1a2332;border:2px solid #e8ecf1;transition:.2s}
+.btn-plan:hover{background:var(--g);color:#fff;border-color:var(--g)}
+.btn-plan.pop{background:var(--g);color:#fff;border-color:var(--g)}
+
+/* STATS */
+.stats-section{background:linear-gradient(135deg,#0f1923,#145f3d);padding:60px 40px;text-align:center}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:900px;margin:0 auto}
+.stat .val{font-size:40px;font-weight:800;color:#fff}
+.stat .lbl{font-size:14px;color:rgba(255,255,255,.55);margin-top:4px}
+
+/* CTA */
+.cta-section{padding:80px 40px;text-align:center;background:#fff}
+.cta-section h2{font-size:34px;font-weight:700;margin-bottom:8px}
+.cta-section h3{font-family:'Tajawal',Arial;font-size:22px;color:#6b7a8d;font-weight:400;margin-bottom:28px}
+.btn-cta{display:inline-block;background:var(--g);color:#fff;padding:16px 32px;border-radius:10px;font-size:16px;font-weight:700;transition:.2s;margin-bottom:12px}
+.btn-cta:hover{background:var(--gl);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,122,78,.4)}
+.cta-sub{font-size:13px;color:#9aa8b8}
+
+/* FOOTER */
+footer{background:#0f1923;padding:40px;color:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:space-between}
+footer .logo{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-inner,.features-grid,.pricing-grid,.stats-grid{grid-template-columns:1fr}
+  .preview-card{display:none}
+  .hero h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">🇸🇦</div>
+    <span class="logo-name">Saudi ERP</span>
+  </div>
+  <a href="/">Home</a>
+  <a href="/pricing">Pricing</a>
+  <a href="#features">Features</a>
+  <a href="/admin">Demo ↗</a>
+  <a href="/register" class="nav-cta">Start Free Trial</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🇸🇦 Built specifically for Saudi Arabia • مصمم للمملكة العربية السعودية</div>
+      <h1>The Complete ERP<br/>for <span class="grad">Saudi Business</span></h1>
+      <h2>نظام إدارة متكامل<br/>للأعمال السعودية</h2>
+      <p>ZATCA-compliant e-invoicing, Saudi HR with GOSI &amp; End of Service, POS with Mada &amp; STC Pay — all in one modern platform with a beautiful custom dashboard.</p>
+      <div class="hero-btns">
+        <a href="/register?plan=trial" class="btn-primary">Start Free Trial / جرب مجاناً →</a>
+        <a href="/admin" class="btn-outline">View Live Demo →</a>
+      </div>
+      <div class="trust">
+        <span>✓ ZATCA Phase 1 &amp; 2</span>
+        <span>✓ Saudi Labor Law</span>
+        <span>✓ GOSI Compliant</span>
+        <span>✓ Arabic RTL</span>
+        <span>✓ Hijri Calendar</span>
+      </div>
+    </div>
+
+    <!-- Dashboard Preview -->
+    <div class="preview-card" style="position:relative;min-height:340px">
+      <div class="preview-topbar">
+        <div class="pbar-dots"><span></span><span></span><span></span></div>
+        <span class="pbar-title">Saudi ERP — Dashboard</span>
+      </div>
+      <div class="preview-body" style="position:relative">
+        <div class="preview-sidebar">
+          <div class="ps-ico active">📊</div>
+          <div class="ps-ico">💰</div>
+          <div class="ps-ico">👥</div>
+          <div class="ps-ico">🛒</div>
+          <div class="ps-ico">📋</div>
+        </div>
+        <div class="preview-content" style="padding-left:62px">
+          <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:8px">Dashboard / لوحة التحكم</div>
+          <div class="p-kpis">
+            <div class="p-kpi g"><div class="p-kpi-v">SAR 285K</div><div class="p-kpi-l">Revenue / الإيرادات</div></div>
+            <div class="p-kpi o"><div class="p-kpi-v">SAR 42K</div><div class="p-kpi-l">VAT 15%</div></div>
+            <div class="p-kpi b"><div class="p-kpi-v">47</div><div class="p-kpi-l">Employees</div></div>
+            <div class="p-kpi p"><div class="p-kpi-v">Phase 2</div><div class="p-kpi-l">ZATCA</div></div>
+          </div>
+          <div class="p-chart">
+            <div class="p-chart-title">Revenue Trend — 6 Months</div>
+            <div class="chart-bars">
+              <div class="cb" style="height:55%"></div>
+              <div class="cb" style="height:70%"></div>
+              <div class="cb" style="height:48%"></div>
+              <div class="cb" style="height:82%"></div>
+              <div class="cb" style="height:66%"></div>
+              <div class="cb hi" style="height:100%"></div>
+            </div>
+          </div>
+          <div style="margin-top:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:5px;padding:6px 10px;font-size:9px;color:#f87171">⚠️ 1 Expired Iqama — Action required</div>
+          <div style="margin-top:4px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:6px 10px;font-size:9px;color:#93c5fd">📋 2 Invoices pending ZATCA submission</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat"><div class="val">500+</div><div class="lbl">Companies Registered</div></div>
+    <div class="stat"><div class="val">99.9%</div><div class="lbl">Uptime SLA</div></div>
+    <div class="stat"><div class="val">15%</div><div class="lbl">VAT Auto-Applied</div></div>
+    <div class="stat"><div class="val">Phase 2</div><div class="lbl">ZATCA Integration</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features">
+<div class="section">
+  <div class="sec-hdr">
+    <h2>Everything You Need / كل ما تحتاجه</h2>
+    <p>Built specifically for Saudi Arabia's regulations and business practices</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat"><div class="feat-ico">📋</div><h3>ZATCA E-Invoicing</h3><p>Phase 1 &amp; Phase 2 compliant. Auto-generate UBL 2.1 XML invoices, TLV QR codes, and submit directly to the Fatoora portal.</p></div>
+    <div class="feat"><div class="feat-ico">💼</div><h3>Saudi HR &amp; Payroll</h3><p>GOSI calculations (Saudi 10%+12%, Expat 2%), Iqama tracking with alerts, End of Service per Labor Law Article 84, WPS payroll.</p></div>
+    <div class="feat"><div class="feat-ico">🛒</div><h3>Saudi POS</h3><p>Mada, STC Pay, Apple Pay, Tabby. Arabic receipts with ZATCA QR code. VAT 15% auto-applied on all transactions.</p></div>
+    <div class="feat"><div class="feat-ico">📊</div><h3>Modern Admin Dashboard</h3><p>Beautiful custom UI (not standard Odoo) with real-time KPIs, Chart.js charts, Saudization tracker, and smart alerts.</p></div>
+    <div class="feat"><div class="feat-ico">🌐</div><h3>Arabic First</h3><p>Full RTL Arabic interface, Hijri calendar alongside Gregorian, bilingual documents and invoices. Works in both Arabic and English.</p></div>
+    <div class="feat"><div class="feat-ico">☁️</div><h3>Cloud SaaS</h3><p>Multi-tenant platform. No servers needed. Data hosted in Saudi Arabia. Start in minutes. Cancel anytime.</p></div>
+    <div class="feat"><div class="feat-ico">🏛️</div><h3>Zakat &amp; WHT</h3><p>Zakat declaration support, Withholding Tax (5%, 15% for non-residents), SOCPA-compliant chart of accounts.</p></div>
+    <div class="feat"><div class="feat-ico">📁</div><h3>WPS &amp; GOSI Files</h3><p>Generate SAMA Wage Protection System (WPS) files for payroll. Bulk GOSI submission reports by month.</p></div>
+    <div class="feat"><div class="feat-ico">🔐</div><h3>Multi-Company</h3><p>Manage multiple branches or subsidiaries from one platform. Separate accounting per entity, consolidated reports.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section">
+  <div class="sec-hdr">
+    <h2>Simple Pricing / أسعار بسيطة</h2>
+    <p>All prices in Saudi Riyals • جميع الأسعار بالريال السعودي • No hidden fees</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="plan-card">
+      <div class="plan-body">
+        <div class="plan-ico">🆓</div>
+        <div class="plan-name">Trial / تجريبي</div>
+        <div class="plan-price">Free<span> </span></div>
+        <div class="plan-period">14 days • No card needed</div>
+        <ul class="plan-feats">
+          <li class="incl">✓ 5 Users</li>
+          <li class="incl">✓ Accounting + ZATCA Ph.1</li>
+          <li class="incl">✓ Saudi HR (GOSI + EOS)</li>
+          <li class="incl">✓ Arabic Support</li>
+          <li>✗ POS</li><li>✗ Phase 2</li>
+        </ul>
+        <a href="/register?plan=trial" class="btn-plan">Start Free</a>
+      </div>
+    </div>
+    <div class="plan-card pop">
+      <div class="plan-top-badge">⭐ Most Popular</div>
+      <div class="plan-body">
+        <div class="plan-ico">🚀</div>
+        <div class="plan-name">Starter / مبتدئ</div>
+        <div class="plan-price">500<span> SAR/mo</span></div>
+        <div class="plan-period">Up to 10 users</div>
+        <ul class="plan-feats">
+          <li class="incl">✓ All Trial features</li>
+          <li class="incl">✓ ZATCA Phase 1 &amp; 2</li>
+          <li class="incl">✓ Saudi POS (Mada, STC)</li>
+          <li class="incl">✓ Custom Dashboard</li>
+          <li class="incl">✓ Iqama Tracker</li>
+          <li>✗ Inventory</li>
+        </ul>
+        <a href="/register?plan=starter" class="btn-plan pop">Get Started</a>
+      </div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-body">
+        <div class="plan-ico">💼</div>
+        <div class="plan-name">Professional / احترافي</div>
+        <div class="plan-price">1,500<span> SAR/mo</span></div>
+        <div class="plan-period">Up to 50 users</div>
+        <ul class="plan-feats">
+          <li class="incl">✓ Everything in Starter</li>
+          <li class="incl">✓ Inventory + Purchasing</li>
+          <li class="incl">✓ CRM + Sales</li>
+          <li class="incl">✓ Zakat Declaration</li>
+          <li class="incl">✓ Priority Support 4h SLA</li>
+        </ul>
+        <a href="/register?plan=professional" class="btn-plan">Get Started</a>
+      </div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-body" style="background:linear-gradient(135deg,#0f1923,#1a2a38);color:#fff;border-radius:14px">
+        <div class="plan-ico">🏢</div>
+        <div class="plan-name" style="color:#fff">Enterprise / مؤسسي</div>
+        <div class="plan-price" style="color:#c9a84c">Custom<span style="color:rgba(255,255,255,.4)"> pricing</span></div>
+        <div class="plan-period" style="color:rgba(255,255,255,.4)">Unlimited users</div>
+        <ul class="plan-feats">
+          <li class="incl" style="color:#4ade80">✓ All Professional</li>
+          <li class="incl" style="color:#4ade80">✓ On-premise option</li>
+          <li class="incl" style="color:#4ade80">✓ 24/7 Support</li>
+          <li class="incl" style="color:#4ade80">✓ Custom Development</li>
+          <li class="incl" style="color:#4ade80">✓ Data Migration</li>
+        </ul>
+        <a href="/register?plan=enterprise" class="btn-plan" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2)">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to Modernize Your Saudi Business?</h2>
+  <h3>هل أنت مستعد لتحديث أعمالك السعودية؟</h3>
+  <a href="/register?plan=trial" class="btn-cta">Start Your Free 14-Day Trial / ابدأ تجربتك المجانية →</a>
+  <div class="cta-sub">No credit card required • لا حاجة لبطاقة ائتمان • Cancel anytime</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo"><span style="font-size:22px">🇸🇦</span> Saudi ERP</div>
+  <div style="font-size:12px">Built on Odoo 17 • Customized for Saudi Arabia</div>
+  <div style="display:flex;gap:16px;font-size:12px">
+    <a href="/pricing" style="color:rgba(255,255,255,.5)">Pricing</a>
+    <a href="/register" style="color:rgba(255,255,255,.5)">Register</a>
+    <a href="/admin" style="color:rgba(255,255,255,.5)">Demo</a>
+  </div>
+</footer>
+
+</body>
+</html>

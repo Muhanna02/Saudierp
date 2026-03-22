@@ -1,0 +1,108 @@
+{% extends "admin_base.html" %}
+{% block title %}ZATCA — Saudi ERP{% endblock %}
+{% block page_title %}ZATCA E-Invoicing / الفوترة الإلكترونية{% endblock %}
+{% block content %}
+
+<div class="banner">
+  <div class="banner-l">
+    <h3>ZATCA Fatoora Portal Integration</h3>
+    <p>هيئة الزكاة والضريبة والجمارك • Phase 2 Integrated</p>
+  </div>
+  <div class="banner-r">
+    <div class="bplan">PHASE 2</div>
+    <div class="bexp">VAT: {{ company.vat_number }}</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+  <div class="zatca-card">
+    <div class="zatca-hdr">
+      <div class="zatca-ico">⚡</div>
+      <div>
+        <div style="font-size:14px;font-weight:600">Integration Status</div>
+        <div style="font-size:12px;color:var(--txt3)">Fatoora API</div>
+      </div>
+    </div>
+    <span class="zatca-phase phase2">● Phase 2 - Integrated</span>
+    <div class="zatca-metrics" style="margin-top:14px">
+      <div class="zatca-metric"><div class="mv" style="color:var(--green)">6</div><div class="ml">Cleared</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#3b82f6">2</div><div class="ml">Submitted</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#f59e0b">2</div><div class="ml">Pending</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#ef4444">0</div><div class="ml">Rejected</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">Company Info</div>
+    <table style="width:100%;font-size:13px">
+      <tr><td style="color:var(--txt3);padding:4px 0">VAT Number</td><td style="font-weight:600">{{ company.vat_number }}</td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">CR Number</td><td>{{ company.cr_number }}</td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">Phase</td><td><span style="color:var(--green);font-weight:600">Phase 2 ✓</span></td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">API Env.</td><td><span style="color:#f59e0b">Sandbox</span></td></tr>
+    </table>
+    <button onclick="showToast('Opening ZATCA setup wizard...')" style="margin-top:12px;width:100%;background:var(--green);color:#fff;border:none;border-radius:7px;padding:8px;font-size:13px;font-weight:600;cursor:pointer">Reconfigure ZATCA</button>
+  </div>
+
+  <div class="card" style="padding:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">QR Code Preview</div>
+    <div style="text-align:center">
+      <div style="width:100px;height:100px;background:linear-gradient(135deg,#0f1923,#1a7a4e);border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:36px">📱</div>
+      <div style="font-size:11px;color:var(--txt3)">TLV-encoded QR per ZATCA spec</div>
+      <div style="font-size:10px;color:var(--txt3);word-break:break-all;margin-top:6px;background:var(--bg);padding:6px;border-radius:5px">{{ company.name[:20] }} • 15% VAT</div>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice list -->
+<div class="card">
+  <div class="card-h">
+    <div><div class="card-title">ZATCA Invoice Log / سجل الفواتير الإلكترونية</div></div>
+    <button onclick="submitAllPending()" style="background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer">Submit All Pending</button>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Total</th><th>UUID</th><th>ZATCA Status</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for inv in invoices %}
+    <tr id="row-{{ loop.index }}">
+      <td><strong>{{ inv.name }}</strong></td>
+      <td>{{ inv.partner }}</td>
+      <td>{{ inv.date }}</td>
+      <td>SAR {{ "{:,.2f}".format(inv.amount) }}</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">{{ range(8)|map('string')|join('')[:8] }}-DEMO</td>
+      <td><span class="badge {{ inv.zatca }}" id="zatca-badge-{{ loop.index }}">{{ inv.zatca|replace('_',' ')|title }}</span></td>
+      <td>
+        <button onclick="downloadXML('{{ inv.name }}')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        {% if inv.zatca == 'not_submitted' %}
+        <button onclick="submitOne({{ loop.index }},'{{ inv.name }}')" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">Submit</button>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+{% endblock %}
+{% block js %}
+{{ super() }}
+function showToast(msg){
+  const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';setTimeout(()=>t.style.opacity='0',3000);
+}
+function submitOne(idx,name){
+  const badge=document.getElementById('zatca-badge-'+idx);
+  badge.className='badge cleared';badge.textContent='Cleared';
+  showToast('✅ '+name+' submitted & cleared by ZATCA!');
+}
+function submitAllPending(){
+  document.querySelectorAll('.badge.not_submitted').forEach(b=>{b.className='badge submitted';b.textContent='Submitted';});
+  setTimeout(()=>{
+    document.querySelectorAll('.badge.submitted').forEach(b=>{b.className='badge cleared';b.textContent='Cleared';});
+  },1500);
+  showToast('✅ All pending invoices submitted to ZATCA!');
+}
+function downloadXML(name){showToast('📥 Downloading ZATCA XML for '+name+'...');}
+{% endblock %}

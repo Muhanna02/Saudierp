@@ -1,0 +1,195 @@
+{% extends "admin_base.html" %}
+{% block title %}HR — Saudi ERP{% endblock %}
+{% block page_title %}HR & Payroll / الموارد البشرية{% endblock %}
+{% block content %}
+
+<!-- KPIs -->
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi green">
+    <div class="kpi-top"><div class="kpi-ico">👥</div></div>
+    <div class="kpi-val">{{ employees|length }}</div>
+    <div class="kpi-lbl">Total Employees</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-top"><div class="kpi-ico">🇸🇦</div></div>
+    <div class="kpi-val">{{ saudization_pct }}%</div>
+    <div class="kpi-lbl">Saudization (Nitaqat)</div>
+  </div>
+  <div class="kpi orange">
+    <div class="kpi-top"><div class="kpi-ico">⚠️</div></div>
+    <div class="kpi-val">{{ employees|selectattr('status','eq','expiring')|list|length }}</div>
+    <div class="kpi-lbl">Expiring Iqama (90d)</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-top"><div class="kpi-ico">🚨</div></div>
+    <div class="kpi-val">{{ employees|selectattr('status','eq','expired')|list|length }}</div>
+    <div class="kpi-lbl">Expired Iqama</div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+  <button class="qa-btn" onclick="showEOS()">📊 EOS Calculator</button>
+  <button class="qa-btn" onclick="showGOSI()">🏥 GOSI Report</button>
+  <button class="qa-btn" onclick="showToast('Opening payslip wizard...')">💸 Run Payroll</button>
+  <button class="qa-btn" onclick="showToast('WPS file generating...')">📁 WPS File</button>
+</div>
+
+<!-- Employee Table -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h">
+    <div><div class="card-title">Employees / الموظفون</div><div class="card-sub">{{ employees|length }} employees</div></div>
+    <div style="display:flex;gap:8px">
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;background:var(--bg)">
+        <option>All Nationalities</option><option>Saudi</option><option>Expat</option>
+      </select>
+    </div>
+  </div>
+  <table class="tbl">
+    <thead><tr>
+      <th>Employee</th><th>Nationality</th><th>Department</th><th>Basic Salary</th>
+      <th>Iqama No.</th><th>Iqama Expiry</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+    {% for emp in employees %}
+    <tr>
+      <td>
+        <div style="font-weight:600">{{ emp.name_en }}</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">{{ emp.name }}</div>
+      </td>
+      <td>
+        {% if emp.nationality == 'Saudi' %}
+        <span style="background:rgba(26,122,78,.1);color:#1a7a4e;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">🇸🇦 Saudi</span>
+        {% else %}
+        <span style="background:rgba(59,130,246,.1);color:#3b82f6;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">✈️ Expat</span>
+        {% endif %}
+      </td>
+      <td>{{ emp.dept }}</td>
+      <td>SAR {{ "{:,.0f}".format(emp.basic) }}</td>
+      <td>{{ emp.iqama or '—' }}</td>
+      <td>{{ emp.iqama_exp or '—' }}</td>
+      <td><span class="badge {{ emp.status }}">{{ emp.status|title }}</span></td>
+      <td>
+        <button onclick="showToast('Opening {{ emp.name_en }} profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('{{ emp.name_en }}',{{ emp.basic }})" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- EOS Calculator Modal -->
+<div id="eos-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:480px;max-width:90vw;box-shadow:0 16px 48px rgba(0,0,0,.2)">
+    <h3 style="margin-bottom:16px;font-size:17px">EOS Calculator / حاسبة نهاية الخدمة</h3>
+    <div style="background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;color:#3b82f6">
+      Per Saudi Labor Law Article 84 / وفقاً للمادة 84 من نظام العمل
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Employee</label>
+      <input id="eos-name" readonly style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:#f9f9f9"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Basic Salary (SAR)</label>
+      <input id="eos-salary" type="number" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Housing Allowance (SAR)</label>
+      <input id="eos-housing" type="number" value="0" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Years of Service</label>
+      <input id="eos-years" type="number" step="0.5" min="0" value="3" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px" oninput="calcEOSAmount()"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Termination Reason</label>
+      <select id="eos-reason" onchange="calcEOSAmount()" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:#fff">
+        <option value="termination">Terminated by Employer</option>
+        <option value="resignation">Resignation</option>
+        <option value="contract_end">Contract End</option>
+      </select></div>
+    </div>
+    <div id="eos-result" style="background:rgba(26,122,78,.05);border:1px solid rgba(26,122,78,.15);border-radius:9px;padding:16px;text-align:center;margin-bottom:16px">
+      <div style="font-size:12px;color:var(--txt3);margin-bottom:4px">Calculated EOS Amount</div>
+      <div id="eos-amount" style="font-size:28px;font-weight:700;color:var(--green)">SAR 0</div>
+      <div id="eos-breakdown" style="font-size:11px;color:var(--txt3);margin-top:4px"></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="calcEOSAmount()" style="flex:1;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:600;cursor:pointer">Calculate</button>
+      <button onclick="document.getElementById('eos-modal').style.display='none'" style="flex:1;background:var(--bg);color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:14px;cursor:pointer">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOSI Modal -->
+<div id="gosi-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:560px;max-width:90vw">
+    <h3 style="margin-bottom:16px">GOSI Monthly Report / تقرير التأمينات الاجتماعية</h3>
+    <table class="tbl" style="margin-bottom:16px">
+      <thead><tr><th>Employee</th><th>Nationality</th><th>GOSI Salary</th><th>Employee (10%)</th><th>Employer</th><th>Total</th></tr></thead>
+      <tbody id="gosi-tbody"></tbody>
+      <tfoot><tr style="background:rgba(26,122,78,.05);font-weight:700">
+        <td colspan="3"><strong>Total / المجموع</strong></td>
+        <td id="gosi-total-emp"></td>
+        <td id="gosi-total-er"></td>
+        <td id="gosi-grand"></td>
+      </tr></tfoot>
+    </table>
+    <button onclick="document.getElementById('gosi-modal').style.display='none'" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer">Close</button>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+const EMPLOYEES = {{ employees|tojson }};
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',3000);
+}
+
+function calcEOS(name, salary){
+  document.getElementById('eos-name').value=name;
+  document.getElementById('eos-salary').value=salary;
+  document.getElementById('eos-modal').style.display='flex';
+  calcEOSAmount();
+}
+
+function calcEOSAmount(){
+  const basic=parseFloat(document.getElementById('eos-salary').value)||0;
+  const housing=parseFloat(document.getElementById('eos-housing').value)||0;
+  const years=parseFloat(document.getElementById('eos-years').value)||0;
+  const reason=document.getElementById('eos-reason').value;
+  const monthlyBase=basic+housing;
+  let eos=0;
+  if(years<2&&reason==='resignation'){eos=0;}
+  else if(years<=5){eos=monthlyBase*years*(1/3);}
+  else if(years<=10){eos=monthlyBase*5*(1/3)+monthlyBase*(years-5)*(2/3);}
+  else{eos=monthlyBase*5*(1/3)+monthlyBase*5*(2/3)+monthlyBase*(years-10);}
+  if(reason==='resignation'){
+    if(years>=2&&years<5)eos*=1/3;
+    else if(years>=5&&years<10)eos*=2/3;
+  }
+  document.getElementById('eos-amount').textContent='SAR '+eos.toLocaleString('en-SA',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('eos-breakdown').textContent=`${years.toFixed(1)} years × SAR ${monthlyBase.toLocaleString()} base (${reason})`;
+}
+
+function showGOSI(){
+  const tbody=document.getElementById('gosi-tbody');
+  tbody.innerHTML='';
+  let totEmp=0,totEr=0;
+  EMPLOYEES.forEach(e=>{
+    const gosiSalary=Math.min(e.basic,45000);
+    const emp=e.nationality==='Saudi'?gosiSalary*0.10:0;
+    const er=e.nationality==='Saudi'?gosiSalary*0.12:gosiSalary*0.02;
+    totEmp+=emp; totEr+=er;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${e.name_en}</td><td>${e.nationality}</td><td>SAR ${gosiSalary.toLocaleString()}</td><td>SAR ${emp.toFixed(2)}</td><td>SAR ${er.toFixed(2)}</td><td><strong>SAR ${(emp+er).toFixed(2)}</strong></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('gosi-total-emp').textContent='SAR '+totEmp.toFixed(2);
+  document.getElementById('gosi-total-er').textContent='SAR '+totEr.toFixed(2);
+  document.getElementById('gosi-grand').innerHTML='<strong>SAR '+(totEmp+totEr).toFixed(2)+'</strong>';
+  document.getElementById('gosi-modal').style.display='flex';
+}
+{% endblock %}

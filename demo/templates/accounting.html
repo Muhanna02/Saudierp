@@ -1,0 +1,97 @@
+{% extends "admin_base.html" %}
+{% block title %}Accounting — Saudi ERP{% endblock %}
+{% block page_title %}Accounting / المحاسبة{% endblock %}
+{% block content %}
+
+<!-- KPIs -->
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi green">
+    <div class="kpi-top"><div class="kpi-ico">💰</div><span class="kpi-badge up">↑ 17%</span></div>
+    <div class="kpi-val">SAR 285,400</div>
+    <div class="kpi-lbl">Revenue This Month</div>
+  </div>
+  <div class="kpi orange">
+    <div class="kpi-top"><div class="kpi-ico">🏛️</div></div>
+    <div class="kpi-val">SAR 42,750</div>
+    <div class="kpi-lbl">VAT 15% Collected</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-top"><div class="kpi-ico">⏳</div></div>
+    <div class="kpi-val">SAR 121,290</div>
+    <div class="kpi-lbl">Outstanding Receivables</div>
+  </div>
+  <div class="kpi purple">
+    <div class="kpi-top"><div class="kpi-ico">📋</div><span class="kpi-badge nt">2 pending</span></div>
+    <div class="kpi-val">ZATCA Phase 2</div>
+    <div class="kpi-lbl">E-Invoicing Status</div>
+  </div>
+</div>
+
+<!-- Actions bar -->
+<div class="quick-actions">
+  <button class="qa-btn" onclick="showToast('New invoice form would open in Odoo backend')">➕ New Invoice</button>
+  <button class="qa-btn" onclick="showToast('ZATCA submission wizard opening...')">📤 Submit to ZATCA</button>
+  <a href="/admin/zatca" class="qa-btn">🔧 ZATCA Setup</a>
+  <button class="qa-btn" onclick="showToast('VAT Return report downloading...')">📊 VAT Return</button>
+  <button class="qa-btn" onclick="showToast('Zakat declaration form opening...')">🕌 Zakat Declaration</button>
+</div>
+
+<!-- Invoices table -->
+<div class="card">
+  <div class="card-h">
+    <div><div class="card-title">Tax Invoices / الفواتير الضريبية</div><div class="card-sub">{{ invoices|length }} invoices shown</div></div>
+    <div style="display:flex;gap:8px">
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;background:var(--bg);color:var(--txt)">
+        <option>All Status</option><option>Paid</option><option>Pending</option><option>Overdue</option>
+      </select>
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;background:var(--bg);color:var(--txt)">
+        <option>All ZATCA</option><option>Cleared</option><option>Submitted</option><option>Not Submitted</option>
+      </select>
+    </div>
+  </div>
+  <table class="tbl">
+    <thead><tr>
+      <th>#</th><th>Invoice</th><th>Customer</th><th>Date</th>
+      <th>Subtotal</th><th>VAT 15%</th><th>Total</th><th>Status</th><th>ZATCA</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+    {% for inv in invoices %}
+    <tr>
+      <td style="color:var(--txt3)">{{ loop.index }}</td>
+      <td><strong>{{ inv.name }}</strong></td>
+      <td>{{ inv.partner }}</td>
+      <td>{{ inv.date }}</td>
+      <td>{{ "{:,.2f}".format(inv.amount - inv.vat) }}</td>
+      <td style="color:#d97706">{{ "{:,.2f}".format(inv.vat) }}</td>
+      <td><strong>{{ "{:,.2f}".format(inv.amount) }}</strong></td>
+      <td><span class="badge {{ inv.status }}">{{ inv.status|title }}</span></td>
+      <td><span class="badge {{ inv.zatca }}">{{ inv.zatca|replace('_',' ')|title }}</span></td>
+      <td>
+        <button onclick="showToast('Opening invoice {{ inv.name }}...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        {% if inv.zatca == 'not_submitted' %}
+        <button onclick="submitZATCA('{{ inv.name }}')" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">Submit</button>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+{% endblock %}
+{% block js %}
+{{ super() }}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',3000);
+}
+function submitZATCA(name){
+  showToast('✅ '+name+' submitted to ZATCA successfully!');
+}
+{% endblock %}

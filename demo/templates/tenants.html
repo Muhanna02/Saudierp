@@ -1,0 +1,81 @@
+{% extends "admin_base.html" %}
+{% block title %}Tenants — Saudi ERP{% endblock %}
+{% block page_title %}SaaS Tenant Management / إدارة المستأجرين{% endblock %}
+{% block content %}
+
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+  <div class="kpi green">
+    <div class="kpi-top"><div class="kpi-ico">🏢</div></div>
+    <div class="kpi-val">{{ tenants|length }}</div>
+    <div class="kpi-lbl">Total Tenants</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-top"><div class="kpi-ico">✅</div></div>
+    <div class="kpi-val">{{ tenants|selectattr('status','eq','active')|list|length }}</div>
+    <div class="kpi-lbl">Active</div>
+  </div>
+  <div class="kpi orange">
+    <div class="kpi-top"><div class="kpi-ico">👥</div></div>
+    <div class="kpi-val">{{ tenants|sum(attribute='users') }}</div>
+    <div class="kpi-lbl">Total Users</div>
+  </div>
+  <div class="kpi purple">
+    <div class="kpi-top"><div class="kpi-ico">💰</div></div>
+    <div class="kpi-val">SAR 8,000</div>
+    <div class="kpi-lbl">Monthly MRR</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h">
+    <div><div class="card-title">Registered Tenants / المستأجرون المسجلون</div></div>
+    <a href="/register" style="background:var(--green);color:#fff;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600">+ Add Tenant</a>
+  </div>
+  <table class="tbl">
+    <thead><tr>
+      <th>Code</th><th>Company</th><th>Plan</th><th>Users</th>
+      <th>Expiry</th><th>Admin Email</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+    {% for t in tenants %}
+    <tr>
+      <td><code style="background:var(--bg);padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700">{{ t.code }}</code></td>
+      <td><strong>{{ t.company }}</strong></td>
+      <td>
+        <span style="padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;
+          {% if t.plan=='Enterprise' %}background:rgba(139,92,246,.1);color:#8b5cf6
+          {% elif t.plan=='Professional' %}background:rgba(26,122,78,.1);color:var(--green)
+          {% elif t.plan=='Starter' %}background:rgba(59,130,246,.1);color:#3b82f6
+          {% else %}background:rgba(107,122,141,.1);color:#6b7280{% endif %}">
+          {{ t.plan }}
+        </span>
+      </td>
+      <td>{{ t.users }}</td>
+      <td>{{ t.expiry }}</td>
+      <td style="color:var(--txt2);font-size:12px">{{ t.email }}</td>
+      <td><span class="badge {{ t.status }}">{{ t.status|title }}</span></td>
+      <td>
+        <button onclick="showToast('Managing {{ t.company }}...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">Manage</button>
+        {% if t.status == 'active' %}
+        <button onclick="showToast('Suspending {{ t.company }}...')" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#ef4444">Suspend</button>
+        {% else %}
+        <button onclick="showToast('Activating {{ t.company }}...')" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">Activate</button>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+{% endblock %}
+{% block js %}
+{{ super() }}
+function showToast(msg){
+  const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';setTimeout(()=>t.style.opacity='0',3000);
+}
+{% endblock %}

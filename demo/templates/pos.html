@@ -1,0 +1,136 @@
+{% extends "admin_base.html" %}
+{% block title %}POS — Saudi ERP{% endblock %}
+{% block page_title %}Point of Sale / نقطة البيع{% endblock %}
+{% block content %}
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+  <!-- POS Config -->
+  <div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-h"><div class="card-title">POS Configuration / إعداد نقطة البيع</div></div>
+      <div style="padding:20px">
+        <div style="margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Branch / الفرع</div>
+          <input value="Main Branch - الفرع الرئيسي" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px" readonly/>
+        </div>
+        <div style="margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">ZATCA Compliance</div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:8px">
+            <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"/>
+            <span style="font-size:13px">Print ZATCA QR on receipt</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:8px">
+            <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"/>
+            <span style="font-size:13px">Apply VAT 15% automatically</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"/>
+            <span style="font-size:13px">Bilingual Arabic/English receipt</span>
+          </label>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Saudi Payment Methods</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer">
+              <input type="checkbox" checked style="accent-color:var(--green)"/>
+              <span style="font-size:12px;font-weight:600">مدى Mada</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer">
+              <input type="checkbox" checked style="accent-color:var(--green)"/>
+              <span style="font-size:12px;font-weight:600">💵 Cash</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer">
+              <input type="checkbox" style="accent-color:var(--green)"/>
+              <span style="font-size:12px;font-weight:600">STC Pay</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer">
+              <input type="checkbox" style="accent-color:var(--green)"/>
+              <span style="font-size:12px;font-weight:600">🍎 Apple Pay</span>
+            </label>
+          </div>
+        </div>
+        <button onclick="showToast('✅ POS configuration saved!')" style="margin-top:16px;width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:600;cursor:pointer">Save Configuration</button>
+      </div>
+    </div>
+
+    <!-- Today's Sales -->
+    <div class="card">
+      <div class="card-h"><div class="card-title">Today's Sales / مبيعات اليوم</div></div>
+      <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:rgba(26,122,78,.05);border-radius:9px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:var(--green)">SAR 12,450</div>
+          <div style="font-size:11px;color:var(--txt3)">Total Sales</div>
+        </div>
+        <div style="background:rgba(245,158,11,.05);border-radius:9px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#d97706">SAR 1,867</div>
+          <div style="font-size:11px;color:var(--txt3)">VAT 15%</div>
+        </div>
+        <div style="background:rgba(59,130,246,.05);border-radius:9px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#3b82f6">47</div>
+          <div style="font-size:11px;color:var(--txt3)">Transactions</div>
+        </div>
+        <div style="background:rgba(139,92,246,.05);border-radius:9px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#8b5cf6">SAR 264</div>
+          <div style="font-size:11px;color:var(--txt3)">Avg. Transaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receipt Preview -->
+  <div>
+    <div class="card">
+      <div class="card-h"><div class="card-title">ZATCA Receipt Preview / معاينة الإيصال</div></div>
+      <div style="padding:20px">
+        <!-- Receipt mockup -->
+        <div style="max-width:320px;margin:0 auto;background:#fff;border:1px solid #ddd;border-radius:4px;padding:20px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8">
+          <div style="text-align:center;font-weight:bold;font-size:14px;margin-bottom:4px">{{ company.name[:30] }}</div>
+          <div style="text-align:center;font-size:11px" dir="rtl">شركة الفيصل التجارية</div>
+          <div style="text-align:center;font-size:10px;color:#666">Main Branch - الفرع الرئيسي</div>
+          <div style="text-align:center;font-size:10px;color:#666">VAT: {{ company.vat_number }}</div>
+          <div style="border-top:1px dashed #ccc;margin:8px 0"></div>
+          <div style="display:flex;justify-content:space-between"><span>Receipt #</span><span>POS/2025/047</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Date</span><span>22/03/2025</span></div>
+          <div style="border-top:1px dashed #ccc;margin:8px 0"></div>
+          <div style="display:flex;justify-content:space-between"><span>Laptop Stand</span><span>SAR 85.00</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Keyboard</span><span>SAR 150.00</span></div>
+          <div style="display:flex;justify-content:space-between"><span>USB Hub (×2)</span><span>SAR 60.00</span></div>
+          <div style="border-top:1px dashed #ccc;margin:8px 0"></div>
+          <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>SAR 295.00</span></div>
+          <div style="display:flex;justify-content:space-between;color:#d97706"><span>VAT 15%</span><span>SAR 44.25</span></div>
+          <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:13px"><span>TOTAL</span><span>SAR 339.25</span></div>
+          <div style="display:flex;justify-content:space-between;color:#666"><span>Paid (Mada مدى)</span><span>SAR 339.25</span></div>
+          <div style="border-top:1px dashed #ccc;margin:8px 0"></div>
+          <!-- QR placeholder -->
+          <div style="text-align:center">
+            <div style="width:80px;height:80px;background:#0f1923;border-radius:6px;margin:0 auto 6px;display:grid;grid-template-columns:repeat(8,1fr);gap:1px;padding:6px">
+              {% for i in range(64) %}
+              <div style="background:{% if i % 3 == 0 or i % 7 == 0 %}#fff{% else %}transparent{% endif %};border-radius:1px"></div>
+              {% endfor %}
+            </div>
+            <div style="font-size:9px;color:#666">ZATCA QR Code</div>
+            <div style="font-size:9px;color:#999" dir="rtl">رمز الاستجابة السريعة</div>
+          </div>
+          <div style="border-top:1px dashed #ccc;margin:8px 0"></div>
+          <div style="text-align:center;font-size:10px;color:#666">شكراً لزيارتكم</div>
+          <div style="text-align:center;font-size:10px;color:#666">Thank you for your visit</div>
+        </div>
+        <div style="text-align:center;margin-top:12px">
+          <button onclick="showToast('Printing test receipt...')" style="background:var(--green);color:#fff;border:none;border-radius:7px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer">🖨️ Print Test Receipt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+{% endblock %}
+{% block js %}
+{{ super() }}
+function showToast(msg){
+  const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';setTimeout(()=>t.style.opacity='0',3000);
+}
+{% endblock %}

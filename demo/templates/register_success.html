@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Registration Successful — Saudi ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Tajawal',sans-serif;background:#f4f6f9;min-height:100vh;display:flex;align-items:center;justify-content:center}
+:root{--g:#1a7a4e}
+.card{background:#fff;border-radius:20px;padding:48px;max-width:500px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.1)}
+.ico{font-size:64px;margin-bottom:20px}
+h1{font-size:26px;font-weight:700;margin-bottom:8px}
+h2{font-family:'Tajawal',Arial;font-size:18px;color:#6b7a8d;margin-bottom:24px}
+.info-box{background:#f4f6f9;border-radius:10px;padding:20px;margin-bottom:24px;text-align:left}
+.info-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #e8ecf1;font-size:14px}
+.info-row:last-child{border:none}
+.info-label{color:#6b7a8d}
+.info-val{font-weight:600}
+.tenant-code{background:var(--g);color:#fff;padding:4px 12px;border-radius:6px;font-family:monospace;font-weight:700;letter-spacing:1px}
+.btn{display:inline-block;background:var(--g);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;margin:8px 4px;transition:.2s}
+.btn:hover{background:#22a362;transform:translateY(-2px)}
+.btn.sec{background:#f4f6f9;color:#1a2332}
+.note{font-size:12px;color:#9aa8b8;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="ico">🎉</div>
+  <h1>Account Created Successfully!</h1>
+  <h2>تم إنشاء الحساب بنجاح</h2>
+
+  <div class="info-box">
+    <div class="info-row">
+      <span class="info-label">Company</span>
+      <span class="info-val">{{ data.get('company_name','—') }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Admin Email</span>
+      <span class="info-val">{{ data.get('admin_email','—') }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Plan</span>
+      <span class="info-val">{{ data.get('plan','trial')|title }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Tenant Code</span>
+      <span class="tenant-code">{{ tenant_code }}</span>
+    </div>
+  </div>
+
+  <a href="/admin" class="btn">Go to Dashboard →</a>
+  <a href="/" class="btn sec">← Back to Home</a>
+
+  <p class="note">A confirmation email has been sent to {{ data.get('admin_email','your email') }}</p>
+  <p class="note" dir="rtl">تم إرسال بريد التأكيد إلى بريدك الإلكتروني</p>
+</div>
+</body>
+</html>

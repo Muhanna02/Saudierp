@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+/* ── Layout ── */
+.layout{display:flex;min-height:100vh}
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar-w);background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;z-index:100;transition:width .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:#2a3a4a;border-radius:2px}
+.sb-brand{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+.sb-logo{width:38px;height:38px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-name{color:#fff;font-weight:700;font-size:15px;line-height:1.2}
+.sb-sub{color:rgba(168,185,200,.6);font-size:11px;margin-top:2px}
+.sb-company{margin:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 12px}
+.sb-co-name{color:#fff;font-size:12px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-co-plan{display:inline-block;background:rgba(26,122,78,.3);color:#4ade80;font-size:10px;padding:2px 7px;border-radius:8px;border:1px solid rgba(74,222,128,.2)}
+.sb-section{padding:12px 0 4px}
+.sb-title{padding:4px 16px 6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(168,185,200,.4);white-space:nowrap}
+.sb-item{padding:2px 8px}
+.sb-link{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:rgba(168,185,200,.8);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sb-link:hover{background:var(--sidebar-h);color:#fff}
+.sb-link.active{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,78,.35)}
+.sb-icon{width:18px;text-align:center;font-size:15px;flex-shrink:0}
+.sb-txt{font-size:13px;font-weight:500}
+.sb-badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px;margin-left:auto}
+.sb-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);margin-top:auto}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .2s}
+.sb-user:hover{background:rgba(255,255,255,.05)}
+.sb-avatar{width:32px;height:32px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:600;color:#fff;line-height:1.2}
+.sb-urole{font-size:11px;color:rgba(168,185,200,.6)}
+/* ── Top Bar ── */
+.topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--hh);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tb-title{font-size:16px;font-weight:600;color:var(--txt);flex:1}
+.tb-date{font-size:12px;color:var(--txt2);background:var(--bg);padding:6px 12px;border-radius:7px;border:1px solid var(--border)}
+.tb-date .hijri{color:var(--green);font-family:'Tajawal',Arial}
+.tb-notif{position:relative;padding:8px;border-radius:7px;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:16px}
+.tb-notif .dot{position:absolute;top:5px;right:5px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+/* ── Content ── */
+.main{margin-left:var(--sidebar-w);padding-top:var(--hh);min-height:100vh}
+.content{padding:24px}
+/* ── Cards ── */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-h{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600}
+.card-sub{font-size:12px;color:var(--txt3);margin-top:1px}
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border-radius:var(--r);padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi.green::before{background:linear-gradient(90deg,#1a7a4e,#22a362)}
+.kpi.blue::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.kpi.orange::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.kpi.red::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+.kpi.purple::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.kpi-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.kpi.green .kpi-ico{background:rgba(26,122,78,.1)}
+.kpi.blue  .kpi-ico{background:rgba(59,130,246,.1)}
+.kpi.orange .kpi-ico{background:rgba(245,158,11,.1)}
+.kpi.red   .kpi-ico{background:rgba(239,68,68,.1)}
+.kpi.purple .kpi-ico{background:rgba(139,92,246,.1)}
+.kpi-badge{font-size:11px;font-weight:600;padding:3px 7px;border-radius:8px}
+.kpi-badge.up{background:rgba(26,122,78,.1);color:#1a7a4e}
+.kpi-badge.dn{background:rgba(239,68,68,.1);color:#ef4444}
+.kpi-badge.nt{background:rgba(107,122,141,.1);color:#6b7a8d}
+.kpi-val{font-size:24px;font-weight:700;line-height:1.1;margin-bottom:3px}
+.kpi-lbl{font-size:12px;color:var(--txt2);font-weight:500}
+.kpi-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Chart grid ── */
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-wrap{position:relative;height:220px}
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:10px 16px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);background:var(--bg);border-bottom:1px solid var(--border)}
+.tbl td{padding:11px 16px;font-size:13px;border-bottom:1px solid rgba(232,236,241,.6)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(244,246,249,.8)}
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%}
+.badge.paid{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.paid::before{background:#1a7a4e}
+.badge.pending{background:rgba(245,158,11,.1);color:#d97706}.badge.pending::before{background:#d97706}
+.badge.overdue{background:rgba(239,68,68,.1);color:#ef4444}.badge.overdue::before{background:#ef4444}
+.badge.cleared{background:rgba(59,130,246,.1);color:#3b82f6}.badge.cleared::before{background:#3b82f6}
+.badge.submitted{background:rgba(139,92,246,.1);color:#8b5cf6}.badge.submitted::before{background:#8b5cf6}
+.badge.not_submitted{background:rgba(156,163,175,.1);color:#6b7280}.badge.not_submitted::before{background:#9ca3af}
+.badge.expiring{background:rgba(245,158,11,.1);color:#d97706}.badge.expiring::before{background:#d97706}
+.badge.expired{background:rgba(239,68,68,.1);color:#ef4444}.badge.expired::before{background:#ef4444}
+.badge.active{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.active::before{background:#1a7a4e}
+.badge.suspended{background:rgba(239,68,68,.1);color:#ef4444}.badge.suspended::before{background:#ef4444}
+/* ── Alert panel ── */
+.alerts{margin-bottom:20px;display:flex;flex-direction:column;gap:8px}
+.alert-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:9px;border:1px solid}
+.alert-row.danger{background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.2)}
+.alert-row.warning{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)}
+.alert-row.info{background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2)}
+.alert-ico{font-size:18px;flex-shrink:0}
+.alert-t{font-size:13px;font-weight:600;margin-bottom:2px}
+.alert-d{font-size:12px;color:var(--txt2)}
+/* ── Quick actions ── */
+.quick-actions{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.qa-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--txt);cursor:pointer;transition:all .2s}
+.qa-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+/* ── Page header ── */
+.page-hdr{margin-bottom:20px}
+.page-hdr h2{font-size:20px;font-weight:700}
+.page-hdr p{font-size:13px;color:var(--txt2);margin-top:3px}
+/* ── Banner ── */
+.banner{background:linear-gradient(135deg,#0f1923 0%,#1a2a38 50%,#145f3d 100%);border-radius:var(--r);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;color:#fff;position:relative;overflow:hidden}
+.banner::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(26,122,78,.12);border-radius:50%}
+.banner-l h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.banner-l p{font-size:12px;opacity:.7}
+.banner-r{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:12px 20px;text-align:center;z-index:1}
+.banner-r .bplan{font-size:15px;font-weight:700}
+.banner-r .bexp{font-size:11px;opacity:.65;margin-top:2px}
+/* ── ZATCA widget ── */
+.zatca-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+.zatca-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.zatca-ico{width:38px;height:38px;border-radius:9px;background:rgba(26,122,78,.1);display:flex;align-items:center;justify-content:center;font-size:18px}
+.zatca-phase{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600}
+.zatca-phase.phase2{background:rgba(26,122,78,.1);color:#1a7a4e;border:1px solid rgba(26,122,78,.2)}
+.zatca-phase.phase1{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.2)}
+.zatca-phase.not_registered{background:rgba(245,158,11,.1);color:#d97706;border:1px solid rgba(245,158,11,.2)}
+.zatca-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zatca-metric{padding:10px;background:var(--bg);border-radius:8px;text-align:center}
+.zatca-metric .mv{font-size:22px;font-weight:700}
+.zatca-metric .ml{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Nitaqat ── */
+.nitaqat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+/* ── Responsive ── */
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.main{margin-left:0}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">🇸🇦</div>
+      <div><div class="sb-name">Saudi ERP</div><div class="sb-sub">v17.0 Enterprise</div></div>
+    </div>
+    <div class="sb-company">
+      <div class="sb-co-name">{{ company.name }}</div>
+      <span class="sb-co-plan">{{ company.subscription_plan }}</span>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Main</div>
+      <div class="sb-item"><a href="/admin/dashboard" class="sb-link {{ 'active' if active_page=='dashboard' }}"><span class="sb-icon">📊</span><span class="sb-txt">Dashboard</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Finance / المالية</div>
+      <div class="sb-item"><a href="/admin/accounting" class="sb-link {{ 'active' if active_page=='accounting' }}"><span class="sb-icon">💰</span><span class="sb-txt">Accounting</span></a></div>
+      <div class="sb-item"><a href="/admin/zatca" class="sb-link {{ 'active' if active_page=='zatca' }}"><span class="sb-icon">📋</span><span class="sb-txt">ZATCA E-Invoicing</span>{% if pending_zatca is defined and pending_zatca %}<span class="sb-badge">{{ pending_zatca }}</span>{% endif %}</a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">HR / الموارد البشرية</div>
+      <div class="sb-item"><a href="/admin/hr" class="sb-link {{ 'active' if active_page=='hr' }}"><span class="sb-icon">👥</span><span class="sb-txt">Employees & HR</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Sales / المبيعات</div>
+      <div class="sb-item"><a href="/admin/pos" class="sb-link {{ 'active' if active_page=='pos' }}"><span class="sb-icon">🛒</span><span class="sb-txt">Point of Sale</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">SaaS Admin</div>
+      <div class="sb-item"><a href="/admin/tenants" class="sb-link {{ 'active' if active_page=='tenants' }}"><span class="sb-icon">🏢</span><span class="sb-txt">Tenants</span></a></div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-avatar">A</div>
+        <div><div class="sb-uname">Admin User</div><div class="sb-urole">SaaS Administrator</div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <span class="tb-title">{% block page_title %}Dashboard{% endblock %}</span>
+      <div class="tb-date">
+        <span id="greg-date"></span>
+        <span style="color:var(--border);margin:0 6px">|</span>
+        <span class="hijri" id="hijri-date" dir="rtl"></span>
+      </div>
+      <div class="tb-notif">🔔<span class="dot"></span></div>
+      <a href="/" style="font-size:12px;color:var(--txt2);padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg)">← Website</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+// Date display
+const now = new Date();
+document.getElementById('greg-date').textContent = now.toLocaleDateString('en-SA',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+try{document.getElementById('hijri-date').textContent = now.toLocaleDateString('ar-SA-u-ca-islamic',{year:'numeric',month:'short',day:'numeric'});}catch(e){}
+{% endblock %}
