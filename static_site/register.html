@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Register — Saudi ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Tajawal',sans-serif;color:#1a2332;background:#f4f6f9;min-height:100vh}
+a{text-decoration:none;color:inherit}
+:root{--g:#1a7a4e;--gl:#22a362}
+.page{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.left{background:linear-gradient(135deg,#0f1923 0%,#0d2518 100%);padding:48px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.left::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%,rgba(26,122,78,.2) 0%,transparent 60%)}
+.left-content{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.brand-ico{width:48px;height:48px;background:var(--g);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff}
+.brand-name{font-size:26px;font-weight:800;color:#fff}
+.brand-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:2px}
+.left h2{font-size:32px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:10px}
+.left h3{font-family:'Tajawal',Arial;font-size:20px;color:rgba(255,255,255,.55);margin-bottom:28px}
+.benefits{display:flex;flex-direction:column;gap:14px}
+.benefit{display:flex;align-items:flex-start;gap:12px}
+.benefit-ico{font-size:20px;flex-shrink:0;margin-top:1px}
+.benefit-t{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
+.benefit-d{font-size:12px;color:rgba(255,255,255,.5)}
+
+.right{display:flex;align-items:center;justify-content:center;padding:48px 40px}
+.form-card{background:#fff;border-radius:16px;padding:36px;width:100%;max-width:440px;box-shadow:0 4px 24px rgba(0,0,0,.08);border:1px solid #e8ecf1}
+.form-title{font-size:22px;font-weight:700;margin-bottom:4px}
+.form-sub{font-size:13px;color:#6b7a8d;margin-bottom:24px;font-family:'Tajawal',Arial}
+
+/* Selected plan badge */
+.plan-selected{display:flex;align-items:center;justify-content:space-between;background:rgba(26,122,78,.05);border:1px solid rgba(26,122,78,.15);border-radius:9px;padding:10px 14px;margin-bottom:20px}
+.plan-sel-name{font-size:14px;font-weight:600;color:var(--g)}
+.plan-sel-price{font-size:13px;color:#6b7a8d}
+.change-plan{font-size:12px;color:var(--g);cursor:pointer}
+
+label{display:block;font-size:12px;font-weight:600;color:#4a5568;margin-bottom:5px;margin-top:14px}
+input,select{width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;color:#1a2332;background:#fafafa;transition:.2s;font-family:'Inter','Tajawal',sans-serif}
+input:focus,select:focus{outline:none;border-color:var(--g);background:#fff;box-shadow:0 0 0 3px rgba(26,122,78,.08)}
+input[dir="rtl"]{font-family:'Tajawal',Arial}
+.plans-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.plan-opt{border:2px solid #e2e8f0;border-radius:8px;padding:10px;cursor:pointer;text-align:center;transition:.2s;user-select:none}
+.plan-opt:hover{border-color:var(--g)}
+.plan-opt.sel{border-color:var(--g);background:rgba(26,122,78,.05)}
+.plan-opt input{display:none}
+.plan-opt-name{font-size:12px;font-weight:700;display:block}
+.plan-opt-price{font-size:10px;color:#9aa8b8;margin-top:2px;display:block}
+.terms-row{display:flex;align-items:flex-start;gap:8px;margin-top:16px;font-size:12px;color:#6b7a8d}
+.terms-row input{width:auto;flex-shrink:0;margin-top:2px}
+.terms-row a{color:var(--g)}
+.submit-btn{width:100%;background:var(--g);color:#fff;border:none;border-radius:9px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-top:18px;transition:.2s;font-family:'Inter',sans-serif}
+.submit-btn:hover{background:var(--gl);transform:translateY(-1px)}
+.login-link{text-align:center;margin-top:14px;font-size:13px;color:#6b7a8d}
+.login-link a{color:var(--g);font-weight:500}
+.vat-hint{font-size:11px;color:#9aa8b8;margin-top:3px}
+.vat-valid{color:var(--g)!important}
+.vat-invalid{color:#ef4444!important}
+@media(max-width:800px){.page{grid-template-columns:1fr}.left{display:none}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="left">
+    <div class="left-content">
+      <div class="brand">
+        <div class="brand-ico">🇸🇦</div>
+        <div><div class="brand-name">Saudi ERP</div><div class="brand-sub">نظام إدارة موارد المؤسسات</div></div>
+      </div>
+      <h2>Start your Saudi ERP journey</h2>
+      <h3>ابدأ رحلتك مع Saudi ERP</h3>
+      <div class="benefits">
+        <div class="benefit">
+          <span class="benefit-ico">✅</span>
+          <div><div class="benefit-t">ZATCA Certified</div><div class="benefit-d">Phase 1 & Phase 2 e-invoicing compliance</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-ico">✅</span>
+          <div><div class="benefit-t">Saudi Labor Law</div><div class="benefit-d">GOSI, End of Service, Iqama tracking</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-ico">✅</span>
+          <div><div class="benefit-t">Saudi POS</div><div class="benefit-d">Mada, STC Pay, ZATCA receipts</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-ico">✅</span>
+          <div><div class="benefit-t">14-Day Free Trial</div><div class="benefit-d">No credit card required • لا بطاقة ائتمان</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-ico">✅</span>
+          <div><div class="benefit-t">Data in Saudi Arabia</div><div class="benefit-d">Servers hosted in KSA • بيانات داخل المملكة</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="form-card">
+      <div class="form-title">Create your account</div>
+      <div class="form-sub">إنشاء حسابك في Saudi ERP</div>
+
+      <form action="#" method="POST">
+        <input type="hidden" name="plan" id="plan-hidden" value="trial"/>
+
+        <!-- Plan selection -->
+        <div>
+          <label>Select Plan</label>
+          <div class="plans-row">
+            <label class="plan-opt sel" onclick="selectPlan('trial',this)">
+              <input type="radio" name="plan_display" value="trial" checked/>
+              <span class="plan-opt-name">Trial</span>
+              <span class="plan-opt-price">Free / 14d</span>
+            </label>
+            <label class="plan-opt " onclick="selectPlan('starter',this)">
+              <input type="radio" name="plan_display" value="starter" />
+              <span class="plan-opt-name">Starter</span>
+              <span class="plan-opt-price">500 SAR/mo</span>
+            </label>
+            <label class="plan-opt " onclick="selectPlan('professional',this)">
+              <input type="radio" name="plan_display" value="professional" />
+              <span class="plan-opt-name">Pro</span>
+              <span class="plan-opt-price">1,500 SAR/mo</span>
+            </label>
+          </div>
+        </div>
+
+        <label>Company Name (English) *</label>
+        <input type="text" name="company_name" placeholder="Al-Faisal Trading Co." required/>
+
+        <label dir="rtl">اسم الشركة بالعربي</label>
+        <input type="text" name="company_name_ar" placeholder="شركة الفيصل التجارية" dir="rtl"/>
+
+        <label>Admin Email *</label>
+        <input type="email" name="admin_email" placeholder="admin@yourcompany.com" required/>
+
+        <label>Phone / الهاتف *</label>
+        <input type="tel" name="admin_phone" placeholder="+966 5x xxx xxxx" required/>
+
+        <label>Commercial Registration / السجل التجاري</label>
+        <input type="text" name="cr_number" placeholder="1234567890" maxlength="10"/>
+
+        <label>VAT Number / رقم ضريبة القيمة المضافة</label>
+        <input type="text" name="vat_number" placeholder="300XXXXXXXXXXX3" maxlength="15" id="vat-input" oninput="validateVAT()"/>
+        <div class="vat-hint" id="vat-hint">15 digits starting with 3</div>
+
+        <div class="terms-row">
+          <input type="checkbox" id="terms" required/>
+          <label for="terms" style="margin:0">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> / أوافق على شروط الاستخدام</label>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          Create Account / إنشاء الحساب →
+        </button>
+        <div class="login-link">Already have an account? <a href="dashboard.html">Log in →</a></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectPlan(plan, el){
+  document.querySelectorAll('.plan-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('plan-hidden').value=plan;
+}
+function validateVAT(){
+  const val=document.getElementById('vat-input').value.replace(/[^0-9]/g,'');
+  document.getElementById('vat-input').value=val;
+  const hint=document.getElementById('vat-hint');
+  if(val.length===0){hint.textContent='15 digits starting with 3';hint.className='vat-hint';}
+  else if(val.length===15&&val.startsWith('3')){hint.textContent='✓ Valid VAT number';hint.className='vat-hint vat-valid';}
+  else{hint.textContent=`${val.length}/15 digits${val.length>0&&!val.startsWith('3')?' — must start with 3':''}`;hint.className='vat-hint vat-invalid';}
+}
+document.querySelector('form').addEventListener('submit',function(){
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='Creating account... / جاري الإنشاء...';
+  btn.disabled=true;
+});
+</script>
+</body>
+</html>

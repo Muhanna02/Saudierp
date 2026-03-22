@@ -68,7 +68,7 @@
       <td>{{ inv.partner }}</td>
       <td>{{ inv.date }}</td>
       <td>SAR {{ "{:,.2f}".format(inv.amount) }}</td>
-      <td style="font-size:10px;color:var(--txt3);font-family:monospace">{{ range(8)|map('string')|join('')[:8] }}-DEMO</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
       <td><span class="badge {{ inv.zatca }}" id="zatca-badge-{{ loop.index }}">{{ inv.zatca|replace('_',' ')|title }}</span></td>
       <td>
         <button onclick="downloadXML('{{ inv.name }}')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>

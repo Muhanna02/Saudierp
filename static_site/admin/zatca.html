@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZATCA — Saudi ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --green:#1a7a4e; --green-l:#22a362; --green-d:#145f3d;
+  --gold:#c9a84c;
+  --sidebar:#0f1923; --sidebar-h:#1a2a38; --sidebar-w:260px;
+  --bg:#f4f6f9; --card:#fff; --border:#e8ecf1;
+  --txt:#1a2332; --txt2:#6b7a8d; --txt3:#9aa8b8;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --r:12px; --hh:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Tajawal',sans-serif;background:var(--bg);color:var(--txt)}
+a{text-decoration:none;color:inherit}
+</style>
+
+<style>
+/* ── Layout ── */
+.layout{display:flex;min-height:100vh}
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar-w);background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;z-index:100;transition:width .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:#2a3a4a;border-radius:2px}
+.sb-brand{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+.sb-logo{width:38px;height:38px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-name{color:#fff;font-weight:700;font-size:15px;line-height:1.2}
+.sb-sub{color:rgba(168,185,200,.6);font-size:11px;margin-top:2px}
+.sb-company{margin:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 12px}
+.sb-co-name{color:#fff;font-size:12px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-co-plan{display:inline-block;background:rgba(26,122,78,.3);color:#4ade80;font-size:10px;padding:2px 7px;border-radius:8px;border:1px solid rgba(74,222,128,.2)}
+.sb-section{padding:12px 0 4px}
+.sb-title{padding:4px 16px 6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(168,185,200,.4);white-space:nowrap}
+.sb-item{padding:2px 8px}
+.sb-link{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:rgba(168,185,200,.8);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sb-link:hover{background:var(--sidebar-h);color:#fff}
+.sb-link.active{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,78,.35)}
+.sb-icon{width:18px;text-align:center;font-size:15px;flex-shrink:0}
+.sb-txt{font-size:13px;font-weight:500}
+.sb-badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px;margin-left:auto}
+.sb-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);margin-top:auto}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .2s}
+.sb-user:hover{background:rgba(255,255,255,.05)}
+.sb-avatar{width:32px;height:32px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:600;color:#fff;line-height:1.2}
+.sb-urole{font-size:11px;color:rgba(168,185,200,.6)}
+/* ── Top Bar ── */
+.topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--hh);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tb-title{font-size:16px;font-weight:600;color:var(--txt);flex:1}
+.tb-date{font-size:12px;color:var(--txt2);background:var(--bg);padding:6px 12px;border-radius:7px;border:1px solid var(--border)}
+.tb-date .hijri{color:var(--green);font-family:'Tajawal',Arial}
+.tb-notif{position:relative;padding:8px;border-radius:7px;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:16px}
+.tb-notif .dot{position:absolute;top:5px;right:5px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+/* ── Content ── */
+.main{margin-left:var(--sidebar-w);padding-top:var(--hh);min-height:100vh}
+.content{padding:24px}
+/* ── Cards ── */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-h{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600}
+.card-sub{font-size:12px;color:var(--txt3);margin-top:1px}
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border-radius:var(--r);padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi.green::before{background:linear-gradient(90deg,#1a7a4e,#22a362)}
+.kpi.blue::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.kpi.orange::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.kpi.red::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+.kpi.purple::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.kpi-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.kpi.green .kpi-ico{background:rgba(26,122,78,.1)}
+.kpi.blue  .kpi-ico{background:rgba(59,130,246,.1)}
+.kpi.orange .kpi-ico{background:rgba(245,158,11,.1)}
+.kpi.red   .kpi-ico{background:rgba(239,68,68,.1)}
+.kpi.purple .kpi-ico{background:rgba(139,92,246,.1)}
+.kpi-badge{font-size:11px;font-weight:600;padding:3px 7px;border-radius:8px}
+.kpi-badge.up{background:rgba(26,122,78,.1);color:#1a7a4e}
+.kpi-badge.dn{background:rgba(239,68,68,.1);color:#ef4444}
+.kpi-badge.nt{background:rgba(107,122,141,.1);color:#6b7a8d}
+.kpi-val{font-size:24px;font-weight:700;line-height:1.1;margin-bottom:3px}
+.kpi-lbl{font-size:12px;color:var(--txt2);font-weight:500}
+.kpi-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Chart grid ── */
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-wrap{position:relative;height:220px}
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:10px 16px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);background:var(--bg);border-bottom:1px solid var(--border)}
+.tbl td{padding:11px 16px;font-size:13px;border-bottom:1px solid rgba(232,236,241,.6)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(244,246,249,.8)}
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%}
+.badge.paid{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.paid::before{background:#1a7a4e}
+.badge.pending{background:rgba(245,158,11,.1);color:#d97706}.badge.pending::before{background:#d97706}
+.badge.overdue{background:rgba(239,68,68,.1);color:#ef4444}.badge.overdue::before{background:#ef4444}
+.badge.cleared{background:rgba(59,130,246,.1);color:#3b82f6}.badge.cleared::before{background:#3b82f6}
+.badge.submitted{background:rgba(139,92,246,.1);color:#8b5cf6}.badge.submitted::before{background:#8b5cf6}
+.badge.not_submitted{background:rgba(156,163,175,.1);color:#6b7280}.badge.not_submitted::before{background:#9ca3af}
+.badge.expiring{background:rgba(245,158,11,.1);color:#d97706}.badge.expiring::before{background:#d97706}
+.badge.expired{background:rgba(239,68,68,.1);color:#ef4444}.badge.expired::before{background:#ef4444}
+.badge.active{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.active::before{background:#1a7a4e}
+.badge.suspended{background:rgba(239,68,68,.1);color:#ef4444}.badge.suspended::before{background:#ef4444}
+/* ── Alert panel ── */
+.alerts{margin-bottom:20px;display:flex;flex-direction:column;gap:8px}
+.alert-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:9px;border:1px solid}
+.alert-row.danger{background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.2)}
+.alert-row.warning{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)}
+.alert-row.info{background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2)}
+.alert-ico{font-size:18px;flex-shrink:0}
+.alert-t{font-size:13px;font-weight:600;margin-bottom:2px}
+.alert-d{font-size:12px;color:var(--txt2)}
+/* ── Quick actions ── */
+.quick-actions{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.qa-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--txt);cursor:pointer;transition:all .2s}
+.qa-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+/* ── Page header ── */
+.page-hdr{margin-bottom:20px}
+.page-hdr h2{font-size:20px;font-weight:700}
+.page-hdr p{font-size:13px;color:var(--txt2);margin-top:3px}
+/* ── Banner ── */
+.banner{background:linear-gradient(135deg,#0f1923 0%,#1a2a38 50%,#145f3d 100%);border-radius:var(--r);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;color:#fff;position:relative;overflow:hidden}
+.banner::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(26,122,78,.12);border-radius:50%}
+.banner-l h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.banner-l p{font-size:12px;opacity:.7}
+.banner-r{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:12px 20px;text-align:center;z-index:1}
+.banner-r .bplan{font-size:15px;font-weight:700}
+.banner-r .bexp{font-size:11px;opacity:.65;margin-top:2px}
+/* ── ZATCA widget ── */
+.zatca-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+.zatca-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.zatca-ico{width:38px;height:38px;border-radius:9px;background:rgba(26,122,78,.1);display:flex;align-items:center;justify-content:center;font-size:18px}
+.zatca-phase{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600}
+.zatca-phase.phase2{background:rgba(26,122,78,.1);color:#1a7a4e;border:1px solid rgba(26,122,78,.2)}
+.zatca-phase.phase1{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.2)}
+.zatca-phase.not_registered{background:rgba(245,158,11,.1);color:#d97706;border:1px solid rgba(245,158,11,.2)}
+.zatca-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zatca-metric{padding:10px;background:var(--bg);border-radius:8px;text-align:center}
+.zatca-metric .mv{font-size:22px;font-weight:700}
+.zatca-metric .ml{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Nitaqat ── */
+.nitaqat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+/* ── Responsive ── */
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.main{margin-left:0}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">🇸🇦</div>
+      <div><div class="sb-name">Saudi ERP</div><div class="sb-sub">v17.0 Enterprise</div></div>
+    </div>
+    <div class="sb-company">
+      <div class="sb-co-name">Al-Faisal Trading Co. (شركة الفيصل التجارية)</div>
+      <span class="sb-co-plan">Professional</span>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Main</div>
+      <div class="sb-item"><a href="dashboard.html" class="sb-link "><span class="sb-icon">📊</span><span class="sb-txt">Dashboard</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Finance / المالية</div>
+      <div class="sb-item"><a href="accounting.html" class="sb-link "><span class="sb-icon">💰</span><span class="sb-txt">Accounting</span></a></div>
+      <div class="sb-item"><a href="zatca.html" class="sb-link active"><span class="sb-icon">📋</span><span class="sb-txt">ZATCA E-Invoicing</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">HR / الموارد البشرية</div>
+      <div class="sb-item"><a href="hr.html" class="sb-link "><span class="sb-icon">👥</span><span class="sb-txt">Employees & HR</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Sales / المبيعات</div>
+      <div class="sb-item"><a href="pos.html" class="sb-link "><span class="sb-icon">🛒</span><span class="sb-txt">Point of Sale</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">SaaS Admin</div>
+      <div class="sb-item"><a href="tenants.html" class="sb-link "><span class="sb-icon">🏢</span><span class="sb-txt">Tenants</span></a></div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-avatar">A</div>
+        <div><div class="sb-uname">Admin User</div><div class="sb-urole">SaaS Administrator</div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <span class="tb-title">ZATCA E-Invoicing / الفوترة الإلكترونية</span>
+      <div class="tb-date">
+        <span id="greg-date"></span>
+        <span style="color:var(--border);margin:0 6px">|</span>
+        <span class="hijri" id="hijri-date" dir="rtl"></span>
+      </div>
+      <div class="tb-notif">🔔<span class="dot"></span></div>
+      <a href="../index.html" style="font-size:12px;color:var(--txt2);padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg)">← Website</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      
+
+<div class="banner">
+  <div class="banner-l">
+    <h3>ZATCA Fatoora Portal Integration</h3>
+    <p>هيئة الزكاة والضريبة والجمارك • Phase 2 Integrated</p>
+  </div>
+  <div class="banner-r">
+    <div class="bplan">PHASE 2</div>
+    <div class="bexp">VAT: 300123456700003</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+  <div class="zatca-card">
+    <div class="zatca-hdr">
+      <div class="zatca-ico">⚡</div>
+      <div>
+        <div style="font-size:14px;font-weight:600">Integration Status</div>
+        <div style="font-size:12px;color:var(--txt3)">Fatoora API</div>
+      </div>
+    </div>
+    <span class="zatca-phase phase2">● Phase 2 - Integrated</span>
+    <div class="zatca-metrics" style="margin-top:14px">
+      <div class="zatca-metric"><div class="mv" style="color:var(--green)">6</div><div class="ml">Cleared</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#3b82f6">2</div><div class="ml">Submitted</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#f59e0b">2</div><div class="ml">Pending</div></div>
+      <div class="zatca-metric"><div class="mv" style="color:#ef4444">0</div><div class="ml">Rejected</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">Company Info</div>
+    <table style="width:100%;font-size:13px">
+      <tr><td style="color:var(--txt3);padding:4px 0">VAT Number</td><td style="font-weight:600">300123456700003</td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">CR Number</td><td>1010234567</td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">Phase</td><td><span style="color:var(--green);font-weight:600">Phase 2 ✓</span></td></tr>
+      <tr><td style="color:var(--txt3);padding:4px 0">API Env.</td><td><span style="color:#f59e0b">Sandbox</span></td></tr>
+    </table>
+    <button onclick="showToast('Opening ZATCA setup wizard...')" style="margin-top:12px;width:100%;background:var(--green);color:#fff;border:none;border-radius:7px;padding:8px;font-size:13px;font-weight:600;cursor:pointer">Reconfigure ZATCA</button>
+  </div>
+
+  <div class="card" style="padding:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">QR Code Preview</div>
+    <div style="text-align:center">
+      <div style="width:100px;height:100px;background:linear-gradient(135deg,#0f1923,#1a7a4e);border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:36px">📱</div>
+      <div style="font-size:11px;color:var(--txt3)">TLV-encoded QR per ZATCA spec</div>
+      <div style="font-size:10px;color:var(--txt3);word-break:break-all;margin-top:6px;background:var(--bg);padding:6px;border-radius:5px">Al-Faisal Trading Co • 15% VAT</div>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice list -->
+<div class="card">
+  <div class="card-h">
+    <div><div class="card-title">ZATCA Invoice Log / سجل الفواتير الإلكترونية</div></div>
+    <button onclick="submitAllPending()" style="background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer">Submit All Pending</button>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Total</th><th>UUID</th><th>ZATCA Status</th><th>Action</th></tr></thead>
+    <tbody>
+    
+    <tr id="row-1">
+      <td><strong>INV/2025/00312</strong></td>
+      <td>Aramco Trading Ltd.</td>
+      <td>2025-03-20</td>
+      <td>SAR 48,500.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge cleared" id="zatca-badge-1">Cleared</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00312')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-2">
+      <td><strong>INV/2025/00311</strong></td>
+      <td>STC Solutions Co.</td>
+      <td>2025-03-19</td>
+      <td>SAR 12,750.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge submitted" id="zatca-badge-2">Submitted</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00311')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-3">
+      <td><strong>INV/2025/00310</strong></td>
+      <td>Almarai Company</td>
+      <td>2025-03-18</td>
+      <td>SAR 33,200.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge cleared" id="zatca-badge-3">Cleared</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00310')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-4">
+      <td><strong>INV/2025/00309</strong></td>
+      <td>SABIC Industrial</td>
+      <td>2025-03-17</td>
+      <td>SAR 67,890.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge not_submitted" id="zatca-badge-4">Not Submitted</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00309')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+        <button onclick="submitOne(4,'INV/2025/00309')" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">Submit</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-5">
+      <td><strong>INV/2025/00308</strong></td>
+      <td>Jarir Bookstore</td>
+      <td>2025-03-16</td>
+      <td>SAR 9,450.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge cleared" id="zatca-badge-5">Cleared</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00308')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-6">
+      <td><strong>INV/2025/00307</strong></td>
+      <td>Al-Rajhi Trading</td>
+      <td>2025-03-15</td>
+      <td>SAR 24,600.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge submitted" id="zatca-badge-6">Submitted</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00307')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-7">
+      <td><strong>INV/2025/00306</strong></td>
+      <td>Mobily Telecom</td>
+      <td>2025-03-14</td>
+      <td>SAR 18,300.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge cleared" id="zatca-badge-7">Cleared</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00306')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    <tr id="row-8">
+      <td><strong>INV/2025/00305</strong></td>
+      <td>Red Sea Mall</td>
+      <td>2025-03-13</td>
+      <td>SAR 41,200.00</td>
+      <td style="font-size:10px;color:var(--txt3);font-family:monospace">FA24-DEMO</td>
+      <td><span class="badge cleared" id="zatca-badge-8">Cleared</span></td>
+      <td>
+        <button onclick="downloadXML('INV/2025/00305')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#3b82f6">XML</button>
+        
+      </td>
+    </tr>
+    
+    </tbody>
+  </table>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+// Date display
+const now = new Date();
+document.getElementById('greg-date').textContent = now.toLocaleDateString('en-SA',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+try{document.getElementById('hijri-date').textContent = now.toLocaleDateString('ar-SA-u-ca-islamic',{year:'numeric',month:'short',day:'numeric'});}catch(e){}
+
+function showToast(msg){
+  const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';setTimeout(()=>t.style.opacity='0',3000);
+}
+function submitOne(idx,name){
+  const badge=document.getElementById('zatca-badge-'+idx);
+  badge.className='badge cleared';badge.textContent='Cleared';
+  showToast('✅ '+name+' submitted & cleared by ZATCA!');
+}
+function submitAllPending(){
+  document.querySelectorAll('.badge.not_submitted').forEach(b=>{b.className='badge submitted';b.textContent='Submitted';});
+  setTimeout(()=>{
+    document.querySelectorAll('.badge.submitted').forEach(b=>{b.className='badge cleared';b.textContent='Cleared';});
+  },1500);
+  showToast('✅ All pending invoices submitted to ZATCA!');
+}
+function downloadXML(name){showToast('📥 Downloading ZATCA XML for '+name+'...');}
+</script>
+</body>
+</html>

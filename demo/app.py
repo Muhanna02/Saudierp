@@ -184,4 +184,6 @@ if __name__ == '__main__':
     print("  💰 Pricing:    http://localhost:8888/pricing")
     print("  📝 Register:   http://localhost:8888/register")
     print("=" * 50)
-    app.run(host='0.0.0.0', port=8888, debug=False)
+    import os
+    port = int(os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=port, debug=False)

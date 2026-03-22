@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HR — Saudi ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --green:#1a7a4e; --green-l:#22a362; --green-d:#145f3d;
+  --gold:#c9a84c;
+  --sidebar:#0f1923; --sidebar-h:#1a2a38; --sidebar-w:260px;
+  --bg:#f4f6f9; --card:#fff; --border:#e8ecf1;
+  --txt:#1a2332; --txt2:#6b7a8d; --txt3:#9aa8b8;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --r:12px; --hh:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Tajawal',sans-serif;background:var(--bg);color:var(--txt)}
+a{text-decoration:none;color:inherit}
+</style>
+
+<style>
+/* ── Layout ── */
+.layout{display:flex;min-height:100vh}
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar-w);background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;z-index:100;transition:width .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:#2a3a4a;border-radius:2px}
+.sb-brand{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+.sb-logo{width:38px;height:38px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-name{color:#fff;font-weight:700;font-size:15px;line-height:1.2}
+.sb-sub{color:rgba(168,185,200,.6);font-size:11px;margin-top:2px}
+.sb-company{margin:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 12px}
+.sb-co-name{color:#fff;font-size:12px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-co-plan{display:inline-block;background:rgba(26,122,78,.3);color:#4ade80;font-size:10px;padding:2px 7px;border-radius:8px;border:1px solid rgba(74,222,128,.2)}
+.sb-section{padding:12px 0 4px}
+.sb-title{padding:4px 16px 6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(168,185,200,.4);white-space:nowrap}
+.sb-item{padding:2px 8px}
+.sb-link{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:rgba(168,185,200,.8);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sb-link:hover{background:var(--sidebar-h);color:#fff}
+.sb-link.active{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,78,.35)}
+.sb-icon{width:18px;text-align:center;font-size:15px;flex-shrink:0}
+.sb-txt{font-size:13px;font-weight:500}
+.sb-badge{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px;margin-left:auto}
+.sb-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);margin-top:auto}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .2s}
+.sb-user:hover{background:rgba(255,255,255,.05)}
+.sb-avatar{width:32px;height:32px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:600;color:#fff;line-height:1.2}
+.sb-urole{font-size:11px;color:rgba(168,185,200,.6)}
+/* ── Top Bar ── */
+.topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--hh);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tb-title{font-size:16px;font-weight:600;color:var(--txt);flex:1}
+.tb-date{font-size:12px;color:var(--txt2);background:var(--bg);padding:6px 12px;border-radius:7px;border:1px solid var(--border)}
+.tb-date .hijri{color:var(--green);font-family:'Tajawal',Arial}
+.tb-notif{position:relative;padding:8px;border-radius:7px;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:16px}
+.tb-notif .dot{position:absolute;top:5px;right:5px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+/* ── Content ── */
+.main{margin-left:var(--sidebar-w);padding-top:var(--hh);min-height:100vh}
+.content{padding:24px}
+/* ── Cards ── */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-h{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600}
+.card-sub{font-size:12px;color:var(--txt3);margin-top:1px}
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border-radius:var(--r);padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi.green::before{background:linear-gradient(90deg,#1a7a4e,#22a362)}
+.kpi.blue::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.kpi.orange::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.kpi.red::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+.kpi.purple::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.kpi-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.kpi.green .kpi-ico{background:rgba(26,122,78,.1)}
+.kpi.blue  .kpi-ico{background:rgba(59,130,246,.1)}
+.kpi.orange .kpi-ico{background:rgba(245,158,11,.1)}
+.kpi.red   .kpi-ico{background:rgba(239,68,68,.1)}
+.kpi.purple .kpi-ico{background:rgba(139,92,246,.1)}
+.kpi-badge{font-size:11px;font-weight:600;padding:3px 7px;border-radius:8px}
+.kpi-badge.up{background:rgba(26,122,78,.1);color:#1a7a4e}
+.kpi-badge.dn{background:rgba(239,68,68,.1);color:#ef4444}
+.kpi-badge.nt{background:rgba(107,122,141,.1);color:#6b7a8d}
+.kpi-val{font-size:24px;font-weight:700;line-height:1.1;margin-bottom:3px}
+.kpi-lbl{font-size:12px;color:var(--txt2);font-weight:500}
+.kpi-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Chart grid ── */
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-wrap{position:relative;height:220px}
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:10px 16px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);background:var(--bg);border-bottom:1px solid var(--border)}
+.tbl td{padding:11px 16px;font-size:13px;border-bottom:1px solid rgba(232,236,241,.6)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(244,246,249,.8)}
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%}
+.badge.paid{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.paid::before{background:#1a7a4e}
+.badge.pending{background:rgba(245,158,11,.1);color:#d97706}.badge.pending::before{background:#d97706}
+.badge.overdue{background:rgba(239,68,68,.1);color:#ef4444}.badge.overdue::before{background:#ef4444}
+.badge.cleared{background:rgba(59,130,246,.1);color:#3b82f6}.badge.cleared::before{background:#3b82f6}
+.badge.submitted{background:rgba(139,92,246,.1);color:#8b5cf6}.badge.submitted::before{background:#8b5cf6}
+.badge.not_submitted{background:rgba(156,163,175,.1);color:#6b7280}.badge.not_submitted::before{background:#9ca3af}
+.badge.expiring{background:rgba(245,158,11,.1);color:#d97706}.badge.expiring::before{background:#d97706}
+.badge.expired{background:rgba(239,68,68,.1);color:#ef4444}.badge.expired::before{background:#ef4444}
+.badge.active{background:rgba(26,122,78,.1);color:#1a7a4e}.badge.active::before{background:#1a7a4e}
+.badge.suspended{background:rgba(239,68,68,.1);color:#ef4444}.badge.suspended::before{background:#ef4444}
+/* ── Alert panel ── */
+.alerts{margin-bottom:20px;display:flex;flex-direction:column;gap:8px}
+.alert-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:9px;border:1px solid}
+.alert-row.danger{background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.2)}
+.alert-row.warning{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2)}
+.alert-row.info{background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2)}
+.alert-ico{font-size:18px;flex-shrink:0}
+.alert-t{font-size:13px;font-weight:600;margin-bottom:2px}
+.alert-d{font-size:12px;color:var(--txt2)}
+/* ── Quick actions ── */
+.quick-actions{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.qa-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--txt);cursor:pointer;transition:all .2s}
+.qa-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+/* ── Page header ── */
+.page-hdr{margin-bottom:20px}
+.page-hdr h2{font-size:20px;font-weight:700}
+.page-hdr p{font-size:13px;color:var(--txt2);margin-top:3px}
+/* ── Banner ── */
+.banner{background:linear-gradient(135deg,#0f1923 0%,#1a2a38 50%,#145f3d 100%);border-radius:var(--r);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;color:#fff;position:relative;overflow:hidden}
+.banner::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(26,122,78,.12);border-radius:50%}
+.banner-l h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.banner-l p{font-size:12px;opacity:.7}
+.banner-r{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:12px 20px;text-align:center;z-index:1}
+.banner-r .bplan{font-size:15px;font-weight:700}
+.banner-r .bexp{font-size:11px;opacity:.65;margin-top:2px}
+/* ── ZATCA widget ── */
+.zatca-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+.zatca-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.zatca-ico{width:38px;height:38px;border-radius:9px;background:rgba(26,122,78,.1);display:flex;align-items:center;justify-content:center;font-size:18px}
+.zatca-phase{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600}
+.zatca-phase.phase2{background:rgba(26,122,78,.1);color:#1a7a4e;border:1px solid rgba(26,122,78,.2)}
+.zatca-phase.phase1{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.2)}
+.zatca-phase.not_registered{background:rgba(245,158,11,.1);color:#d97706;border:1px solid rgba(245,158,11,.2)}
+.zatca-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zatca-metric{padding:10px;background:var(--bg);border-radius:8px;text-align:center}
+.zatca-metric .mv{font-size:22px;font-weight:700}
+.zatca-metric .ml{font-size:11px;color:var(--txt3);margin-top:2px}
+/* ── Nitaqat ── */
+.nitaqat-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:18px;box-shadow:var(--shadow)}
+/* ── Responsive ── */
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.main{margin-left:0}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">🇸🇦</div>
+      <div><div class="sb-name">Saudi ERP</div><div class="sb-sub">v17.0 Enterprise</div></div>
+    </div>
+    <div class="sb-company">
+      <div class="sb-co-name">Al-Faisal Trading Co. (شركة الفيصل التجارية)</div>
+      <span class="sb-co-plan">Professional</span>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Main</div>
+      <div class="sb-item"><a href="dashboard.html" class="sb-link "><span class="sb-icon">📊</span><span class="sb-txt">Dashboard</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Finance / المالية</div>
+      <div class="sb-item"><a href="accounting.html" class="sb-link "><span class="sb-icon">💰</span><span class="sb-txt">Accounting</span></a></div>
+      <div class="sb-item"><a href="zatca.html" class="sb-link "><span class="sb-icon">📋</span><span class="sb-txt">ZATCA E-Invoicing</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">HR / الموارد البشرية</div>
+      <div class="sb-item"><a href="hr.html" class="sb-link active"><span class="sb-icon">👥</span><span class="sb-txt">Employees & HR</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Sales / المبيعات</div>
+      <div class="sb-item"><a href="pos.html" class="sb-link "><span class="sb-icon">🛒</span><span class="sb-txt">Point of Sale</span></a></div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">SaaS Admin</div>
+      <div class="sb-item"><a href="tenants.html" class="sb-link "><span class="sb-icon">🏢</span><span class="sb-txt">Tenants</span></a></div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-avatar">A</div>
+        <div><div class="sb-uname">Admin User</div><div class="sb-urole">SaaS Administrator</div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <span class="tb-title">HR & Payroll / الموارد البشرية</span>
+      <div class="tb-date">
+        <span id="greg-date"></span>
+        <span style="color:var(--border);margin:0 6px">|</span>
+        <span class="hijri" id="hijri-date" dir="rtl"></span>
+      </div>
+      <div class="tb-notif">🔔<span class="dot"></span></div>
+      <a href="../index.html" style="font-size:12px;color:var(--txt2);padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg)">← Website</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      
+
+<!-- KPIs -->
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi green">
+    <div class="kpi-top"><div class="kpi-ico">👥</div></div>
+    <div class="kpi-val">8</div>
+    <div class="kpi-lbl">Total Employees</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-top"><div class="kpi-ico">🇸🇦</div></div>
+    <div class="kpi-val">50.0%</div>
+    <div class="kpi-lbl">Saudization (Nitaqat)</div>
+  </div>
+  <div class="kpi orange">
+    <div class="kpi-top"><div class="kpi-ico">⚠️</div></div>
+    <div class="kpi-val">1</div>
+    <div class="kpi-lbl">Expiring Iqama (90d)</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-top"><div class="kpi-ico">🚨</div></div>
+    <div class="kpi-val">1</div>
+    <div class="kpi-lbl">Expired Iqama</div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+  <button class="qa-btn" onclick="showEOS()">📊 EOS Calculator</button>
+  <button class="qa-btn" onclick="showGOSI()">🏥 GOSI Report</button>
+  <button class="qa-btn" onclick="showToast('Opening payslip wizard...')">💸 Run Payroll</button>
+  <button class="qa-btn" onclick="showToast('WPS file generating...')">📁 WPS File</button>
+</div>
+
+<!-- Employee Table -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h">
+    <div><div class="card-title">Employees / الموظفون</div><div class="card-sub">8 employees</div></div>
+    <div style="display:flex;gap:8px">
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;background:var(--bg)">
+        <option>All Nationalities</option><option>Saudi</option><option>Expat</option>
+      </select>
+    </div>
+  </div>
+  <table class="tbl">
+    <thead><tr>
+      <th>Employee</th><th>Nationality</th><th>Department</th><th>Basic Salary</th>
+      <th>Iqama No.</th><th>Iqama Expiry</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Mohammed Al-Omari</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">محمد العمري</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(26,122,78,.1);color:#1a7a4e;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">🇸🇦 Saudi</span>
+        
+      </td>
+      <td>Finance</td>
+      <td>SAR 12,000</td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Mohammed Al-Omari profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Mohammed Al-Omari',12000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Fahad Al-Harbi</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">فهد الحربي</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(26,122,78,.1);color:#1a7a4e;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">🇸🇦 Saudi</span>
+        
+      </td>
+      <td>HR</td>
+      <td>SAR 10,000</td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Fahad Al-Harbi profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Fahad Al-Harbi',10000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Sara Al-Qahtani</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">سارة القحطاني</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(26,122,78,.1);color:#1a7a4e;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">🇸🇦 Saudi</span>
+        
+      </td>
+      <td>Sales</td>
+      <td>SAR 9,500</td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Sara Al-Qahtani profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Sara Al-Qahtani',9500)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Raj Kumar</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">Raj Kumar</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(59,130,246,.1);color:#3b82f6;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">✈️ Expat</span>
+        
+      </td>
+      <td>IT</td>
+      <td>SAR 8,000</td>
+      <td>2484123456</td>
+      <td>2025-04-15</td>
+      <td><span class="badge expiring">Expiring</span></td>
+      <td>
+        <button onclick="showToast('Opening Raj Kumar profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Raj Kumar',8000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Ahmed Hassan</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">Ahmed Hassan</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(59,130,246,.1);color:#3b82f6;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">✈️ Expat</span>
+        
+      </td>
+      <td>Operations</td>
+      <td>SAR 7,500</td>
+      <td>2484987654</td>
+      <td>2025-06-30</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Ahmed Hassan profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Ahmed Hassan',7500)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">John Smith</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">John Smith</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(59,130,246,.1);color:#3b82f6;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">✈️ Expat</span>
+        
+      </td>
+      <td>Engineering</td>
+      <td>SAR 15,000</td>
+      <td>2484567890</td>
+      <td>2025-03-01</td>
+      <td><span class="badge expired">Expired</span></td>
+      <td>
+        <button onclick="showToast('Opening John Smith profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('John Smith',15000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Khalid Al-Subaie</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">خالد السبيعي</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(26,122,78,.1);color:#1a7a4e;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">🇸🇦 Saudi</span>
+        
+      </td>
+      <td>Procurement</td>
+      <td>SAR 11,000</td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Khalid Al-Subaie profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Khalid Al-Subaie',11000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <div style="font-weight:600">Maria Santos</div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'Tajawal',Arial" dir="rtl">Maria Santos</div>
+      </td>
+      <td>
+        
+        <span style="background:rgba(59,130,246,.1);color:#3b82f6;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600">✈️ Expat</span>
+        
+      </td>
+      <td>Admin</td>
+      <td>SAR 6,000</td>
+      <td>2484111222</td>
+      <td>2025-09-15</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button onclick="showToast('Opening Maria Santos profile...')" style="background:none;border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--txt2)">View</button>
+        <button onclick="calcEOS('Maria Santos',6000)" style="background:rgba(26,122,78,.1);border:1px solid rgba(26,122,78,.2);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--green)">EOS</button>
+      </td>
+    </tr>
+    
+    </tbody>
+  </table>
+</div>
+
+<!-- EOS Calculator Modal -->
+<div id="eos-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:480px;max-width:90vw;box-shadow:0 16px 48px rgba(0,0,0,.2)">
+    <h3 style="margin-bottom:16px;font-size:17px">EOS Calculator / حاسبة نهاية الخدمة</h3>
+    <div style="background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;color:#3b82f6">
+      Per Saudi Labor Law Article 84 / وفقاً للمادة 84 من نظام العمل
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Employee</label>
+      <input id="eos-name" readonly style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:#f9f9f9"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Basic Salary (SAR)</label>
+      <input id="eos-salary" type="number" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Housing Allowance (SAR)</label>
+      <input id="eos-housing" type="number" value="0" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Years of Service</label>
+      <input id="eos-years" type="number" step="0.5" min="0" value="3" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px" oninput="calcEOSAmount()"/></div>
+      <div><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Termination Reason</label>
+      <select id="eos-reason" onchange="calcEOSAmount()" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:#fff">
+        <option value="termination">Terminated by Employer</option>
+        <option value="resignation">Resignation</option>
+        <option value="contract_end">Contract End</option>
+      </select></div>
+    </div>
+    <div id="eos-result" style="background:rgba(26,122,78,.05);border:1px solid rgba(26,122,78,.15);border-radius:9px;padding:16px;text-align:center;margin-bottom:16px">
+      <div style="font-size:12px;color:var(--txt3);margin-bottom:4px">Calculated EOS Amount</div>
+      <div id="eos-amount" style="font-size:28px;font-weight:700;color:var(--green)">SAR 0</div>
+      <div id="eos-breakdown" style="font-size:11px;color:var(--txt3);margin-top:4px"></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="calcEOSAmount()" style="flex:1;background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:600;cursor:pointer">Calculate</button>
+      <button onclick="document.getElementById('eos-modal').style.display='none'" style="flex:1;background:var(--bg);color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:14px;cursor:pointer">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOSI Modal -->
+<div id="gosi-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:560px;max-width:90vw">
+    <h3 style="margin-bottom:16px">GOSI Monthly Report / تقرير التأمينات الاجتماعية</h3>
+    <table class="tbl" style="margin-bottom:16px">
+      <thead><tr><th>Employee</th><th>Nationality</th><th>GOSI Salary</th><th>Employee (10%)</th><th>Employer</th><th>Total</th></tr></thead>
+      <tbody id="gosi-tbody"></tbody>
+      <tfoot><tr style="background:rgba(26,122,78,.05);font-weight:700">
+        <td colspan="3"><strong>Total / المجموع</strong></td>
+        <td id="gosi-total-emp"></td>
+        <td id="gosi-total-er"></td>
+        <td id="gosi-grand"></td>
+      </tr></tfoot>
+    </table>
+    <button onclick="document.getElementById('gosi-modal').style.display='none'" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer">Close</button>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0f1923;color:#fff;padding:12px 20px;border-radius:9px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)">
+  <span id="toast-msg"></span>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+// Date display
+const now = new Date();
+document.getElementById('greg-date').textContent = now.toLocaleDateString('en-SA',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+try{document.getElementById('hijri-date').textContent = now.toLocaleDateString('ar-SA-u-ca-islamic',{year:'numeric',month:'short',day:'numeric'});}catch(e){}
+
+const EMPLOYEES = [{"basic": 12000, "dept": "Finance", "iqama": null, "iqama_exp": null, "name": "\u0645\u062d\u0645\u062f \u0627\u0644\u0639\u0645\u0631\u064a", "name_en": "Mohammed Al-Omari", "nationality": "Saudi", "status": "active"}, {"basic": 10000, "dept": "HR", "iqama": null, "iqama_exp": null, "name": "\u0641\u0647\u062f \u0627\u0644\u062d\u0631\u0628\u064a", "name_en": "Fahad Al-Harbi", "nationality": "Saudi", "status": "active"}, {"basic": 9500, "dept": "Sales", "iqama": null, "iqama_exp": null, "name": "\u0633\u0627\u0631\u0629 \u0627\u0644\u0642\u062d\u0637\u0627\u0646\u064a", "name_en": "Sara Al-Qahtani", "nationality": "Saudi", "status": "active"}, {"basic": 8000, "dept": "IT", "iqama": "2484123456", "iqama_exp": "2025-04-15", "name": "Raj Kumar", "name_en": "Raj Kumar", "nationality": "Expat", "status": "expiring"}, {"basic": 7500, "dept": "Operations", "iqama": "2484987654", "iqama_exp": "2025-06-30", "name": "Ahmed Hassan", "name_en": "Ahmed Hassan", "nationality": "Expat", "status": "active"}, {"basic": 15000, "dept": "Engineering", "iqama": "2484567890", "iqama_exp": "2025-03-01", "name": "John Smith", "name_en": "John Smith", "nationality": "Expat", "status": "expired"}, {"basic": 11000, "dept": "Procurement", "iqama": null, "iqama_exp": null, "name": "\u062e\u0627\u0644\u062f \u0627\u0644\u0633\u0628\u064a\u0639\u064a", "name_en": "Khalid Al-Subaie", "nationality": "Saudi", "status": "active"}, {"basic": 6000, "dept": "Admin", "iqama": "2484111222", "iqama_exp": "2025-09-15", "name": "Maria Santos", "name_en": "Maria Santos", "nationality": "Expat", "status": "active"}];
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',3000);
+}
+
+function calcEOS(name, salary){
+  document.getElementById('eos-name').value=name;
+  document.getElementById('eos-salary').value=salary;
+  document.getElementById('eos-modal').style.display='flex';
+  calcEOSAmount();
+}
+
+function calcEOSAmount(){
+  const basic=parseFloat(document.getElementById('eos-salary').value)||0;
+  const housing=parseFloat(document.getElementById('eos-housing').value)||0;
+  const years=parseFloat(document.getElementById('eos-years').value)||0;
+  const reason=document.getElementById('eos-reason').value;
+  const monthlyBase=basic+housing;
+  let eos=0;
+  if(years<2&&reason==='resignation'){eos=0;}
+  else if(years<=5){eos=monthlyBase*years*(1/3);}
+  else if(years<=10){eos=monthlyBase*5*(1/3)+monthlyBase*(years-5)*(2/3);}
+  else{eos=monthlyBase*5*(1/3)+monthlyBase*5*(2/3)+monthlyBase*(years-10);}
+  if(reason==='resignation'){
+    if(years>=2&&years<5)eos*=1/3;
+    else if(years>=5&&years<10)eos*=2/3;
+  }
+  document.getElementById('eos-amount').textContent='SAR '+eos.toLocaleString('en-SA',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('eos-breakdown').textContent=`${years.toFixed(1)} years × SAR ${monthlyBase.toLocaleString()} base (${reason})`;
+}
+
+function showGOSI(){
+  const tbody=document.getElementById('gosi-tbody');
+  tbody.innerHTML='';
+  let totEmp=0,totEr=0;
+  EMPLOYEES.forEach(e=>{
+    const gosiSalary=Math.min(e.basic,45000);
+    const emp=e.nationality==='Saudi'?gosiSalary*0.10:0;
+    const er=e.nationality==='Saudi'?gosiSalary*0.12:gosiSalary*0.02;
+    totEmp+=emp; totEr+=er;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${e.name_en}</td><td>${e.nationality}</td><td>SAR ${gosiSalary.toLocaleString()}</td><td>SAR ${emp.toFixed(2)}</td><td>SAR ${er.toFixed(2)}</td><td><strong>SAR ${(emp+er).toFixed(2)}</strong></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('gosi-total-emp').textContent='SAR '+totEmp.toFixed(2);
+  document.getElementById('gosi-total-er').textContent='SAR '+totEr.toFixed(2);
+  document.getElementById('gosi-grand').innerHTML='<strong>SAR '+(totEmp+totEr).toFixed(2)+'</strong>';
+  document.getElementById('gosi-modal').style.display='flex';
+}
+</script>
+</body>
+</html>
