@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_config_form_saudi" model="ir.ui.view">
+            <field name="name">pos.config.form.saudi</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="saudi_pos" string="Saudi Arabia / المملكة العربية السعودية">
+                        <group string="ZATCA Compliance">
+                            <field name="saudi_vat_enabled"/>
+                            <field name="zatca_qr_on_receipt"/>
+                            <field name="arabic_receipt"/>
+                        </group>
+                        <group string="Branch Info">
+                            <field name="branch_name"/>
+                            <field name="branch_name_ar"/>
+                        </group>
+                        <group string="Saudi Payment Methods">
+                            <field name="mada_enabled"/>
+                            <field name="stc_pay_enabled"/>
+                            <field name="apple_pay_enabled"/>
+                            <field name="tabby_enabled"/>
+                        </group>
+                        <group string="Loyalty Program">
+                            <field name="loyalty_enabled"/>
+                            <field name="loyalty_points_per_sar"
+                                attrs="{'invisible': [('loyalty_enabled', '=', False)]}"/>
+                        </group>
+                        <group string="Reports">
+                            <field name="z_report_auto"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Saudi Payroll Structure -->
+        <record id="structure_saudi_employee" model="hr.payroll.structure">
+            <field name="name">Saudi Employee Payroll (رواتب الموظفين)</field>
+            <field name="code">SA_EMP</field>
+        </record>
+
+        <!-- Salary Rules -->
+        <!-- Basic Salary -->
+        <record id="rule_basic_salary" model="hr.salary.rule">
+            <field name="name">Basic Salary (الراتب الأساسي)</field>
+            <field name="code">BASIC</field>
+            <field name="sequence">10</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee.basic_salary or contract.wage</field>
+        </record>
+
+        <!-- Housing Allowance -->
+        <record id="rule_housing" model="hr.salary.rule">
+            <field name="name">Housing Allowance (بدل السكن)</field>
+            <field name="code">HOU</field>
+            <field name="sequence">15</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee.housing_allowance or 0</field>
+        </record>
+
+        <!-- Transport Allowance -->
+        <record id="rule_transport" model="hr.salary.rule">
+            <field name="name">Transport Allowance (بدل المواصلات)</field>
+            <field name="code">TRN</field>
+            <field name="sequence">20</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee.transport_allowance or 0</field>
+        </record>
+
+        <!-- GOSI Employee Deduction (Saudi only) -->
+        <record id="rule_gosi_employee" model="hr.salary.rule">
+            <field name="name">GOSI Employee (10%) - التأمينات الاجتماعية</field>
+            <field name="code">GOSI_EMP</field>
+            <field name="sequence">50</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = employee.nationality_category in ['saudi', 'gcc']</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+gosi_base = min((employee.basic_salary or 0) + (employee.housing_allowance or 0), 45000)
+result = -gosi_base * 0.10
+            </field>
+        </record>
+
+        <!-- Gross Salary -->
+        <record id="rule_gross" model="hr.salary.rule">
+            <field name="name">Gross Salary (الإجمالي)</field>
+            <field name="code">GROSS</field>
+            <field name="sequence">100</field>
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ALW</field>
+        </record>
+
+        <!-- Net Salary -->
+        <record id="rule_net" model="hr.salary.rule">
+            <field name="name">Net Salary (صافي الراتب)</field>
+            <field name="code">NET</field>
+            <field name="sequence">200</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="struct_id" ref="structure_saudi_employee"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS + categories.DED</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,53 @@
+/* Saudi POS Custom Styles */
+
+.pos-receipt {
+    font-family: 'Tajawal', 'Arial', sans-serif;
+    direction: ltr;
+}
+
+.pos-receipt .arabic-text {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tajawal', 'Arial', sans-serif;
+}
+
+.zatca-qr-container {
+    text-align: center;
+    margin: 10px 0;
+    padding: 5px;
+    border-top: 1px dashed #ccc;
+}
+
+/* Saudi payment method icons */
+.payment-method-mada::before { content: "مدى "; }
+.payment-method-stc::before { content: "STC Pay "; }
+.payment-method-apple::before { content: "🍎 "; }
+
+/* VAT line highlight */
+.pos-receipt-vat-line {
+    font-weight: bold;
+    color: #2c5364;
+    border-top: 1px solid #ddd;
+    padding-top: 4px;
+}
+
+/* POS Screen Arabic support */
+.pos-content {
+    font-family: 'Tajawal', 'Segoe UI', sans-serif;
+}
+
+/* RTL product names */
+.product-name[dir="rtl"] {
+    text-align: right;
+}
+
+/* Mada/STC Pay button styling */
+.paymentmethod.mada-payment {
+    background: linear-gradient(135deg, #00a651, #007a3d);
+    color: white;
+}
+
+.paymentmethod.stc-payment {
+    background: linear-gradient(135deg, #8b0000, #6b0000);
+    color: white;
+}

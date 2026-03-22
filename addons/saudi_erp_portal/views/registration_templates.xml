@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="registration_page" name="Saudi ERP Registration">
+            <t t-call="website.layout">
+                <div class="saudi-register-page">
+                    <div class="register-container">
+                        <div class="register-left">
+                            <div class="register-brand">
+                                <div class="brand-logo-large">🇸🇦</div>
+                                <h2>Saudi ERP</h2>
+                                <p>The complete ERP solution for Saudi Arabia</p>
+                            </div>
+                            <div class="register-benefits">
+                                <div class="benefit-item">
+                                    <span class="benefit-icon">✅</span>
+                                    <div>
+                                        <strong>ZATCA Compliant</strong>
+                                        <p>Phase 1 &amp; Phase 2 e-invoicing</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <span class="benefit-icon">✅</span>
+                                    <div>
+                                        <strong>Saudi Labor Law</strong>
+                                        <p>GOSI, EOS, Iqama tracking</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <span class="benefit-icon">✅</span>
+                                    <div>
+                                        <strong>Saudi POS</strong>
+                                        <p>Mada, STC Pay, ZATCA receipts</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <span class="benefit-icon">✅</span>
+                                    <div>
+                                        <strong>14-Day Free Trial</strong>
+                                        <p>No credit card required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="register-right">
+                            <div class="register-form-card">
+                                <h3 class="form-title">
+                                    Start Your Free Trial<br/>
+                                    <span dir="rtl" class="form-title-ar">ابدأ تجربتك المجانية</span>
+                                </h3>
+
+                                <t t-if="error">
+                                    <div class="alert alert-danger"><t t-esc="error"/></div>
+                                </t>
+
+                                <form action="/register/submit" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="plan" t-att-value="plan"/>
+
+                                    <div class="form-group">
+                                        <label>Company Name (English) *</label>
+                                        <input type="text" name="company_name" class="form-control"
+                                            placeholder="Al-Faisal Trading Co."
+                                            t-att-value="values.get('company_name', '') if values else ''"
+                                            required="1"/>
+                                        <t t-if="errors and errors.get('company_name')">
+                                            <div class="text-danger small"><t t-esc="errors['company_name']"/></div>
+                                        </t>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label dir="rtl">اسم الشركة (عربي)</label>
+                                        <input type="text" name="company_name_ar" class="form-control"
+                                            placeholder="شركة الفيصل التجارية"
+                                            dir="rtl"
+                                            t-att-value="values.get('company_name_ar', '') if values else ''"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Admin Email *</label>
+                                        <input type="email" name="admin_email" class="form-control"
+                                            placeholder="admin@company.com"
+                                            t-att-value="values.get('admin_email', '') if values else ''"
+                                            required="1"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Phone / الهاتف *</label>
+                                        <input type="tel" name="admin_phone" class="form-control"
+                                            placeholder="+966 5x xxx xxxx"
+                                            t-att-value="values.get('admin_phone', '') if values else ''"
+                                            required="1"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Commercial Registration / السجل التجاري</label>
+                                        <input type="text" name="cr_number" class="form-control"
+                                            placeholder="1234567890"
+                                            t-att-value="values.get('cr_number', '') if values else ''"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>VAT Number / رقم ضريبة القيمة المضافة</label>
+                                        <input type="text" name="vat_number" class="form-control"
+                                            placeholder="300XXXXXXXXXXX3"
+                                            maxlength="15"
+                                            t-att-value="values.get('vat_number', '') if values else ''"/>
+                                    </div>
+
+                                    <!-- Plan Selection -->
+                                    <div class="form-group">
+                                        <label>Plan</label>
+                                        <div class="plan-radio-group">
+                                            <label class="plan-radio" t-att-class="'plan-radio selected' if plan == 'trial' else 'plan-radio'">
+                                                <input type="radio" name="plan" value="trial"
+                                                    t-att-checked="'checked' if plan == 'trial' else None"/>
+                                                <span class="plan-radio-name">Trial</span>
+                                                <span class="plan-radio-price">Free / 14 days</span>
+                                            </label>
+                                            <label class="plan-radio" t-att-class="'plan-radio selected' if plan == 'starter' else 'plan-radio'">
+                                                <input type="radio" name="plan" value="starter"
+                                                    t-att-checked="'checked' if plan == 'starter' else None"/>
+                                                <span class="plan-radio-name">Starter</span>
+                                                <span class="plan-radio-price">500 SAR/mo</span>
+                                            </label>
+                                            <label class="plan-radio" t-att-class="'plan-radio selected' if plan == 'professional' else 'plan-radio'">
+                                                <input type="radio" name="plan" value="professional"
+                                                    t-att-checked="'checked' if plan == 'professional' else None"/>
+                                                <span class="plan-radio-name">Professional</span>
+                                                <span class="plan-radio-price">1,500 SAR/mo</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input type="checkbox" id="terms" name="terms" required="1"/>
+                                        <label for="terms">
+                                            I agree to the <a href="/terms">Terms of Service</a> /
+                                            أوافق على <a href="/terms">شروط الخدمة</a>
+                                        </label>
+                                    </div>
+
+                                    <button type="submit" class="btn-register-submit">
+                                        Create My Account / إنشاء حسابي →
+                                    </button>
+
+                                    <div class="register-footer-note">
+                                        Already have an account? <a href="/web/login">Log in here</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

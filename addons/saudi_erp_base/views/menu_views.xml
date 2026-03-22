@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tenant Management -->
+        <record id="view_saudi_tenant_tree" model="ir.ui.view">
+            <field name="name">saudi.tenant.tree</field>
+            <field name="model">saudi.tenant</field>
+            <field name="arch" type="xml">
+                <tree string="Tenants">
+                    <field name="name"/>
+                    <field name="tenant_code"/>
+                    <field name="plan"/>
+                    <field name="status"/>
+                    <field name="admin_email"/>
+                    <field name="user_count"/>
+                    <field name="subscription_expiry"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_saudi_tenant_form" model="ir.ui.view">
+            <field name="name">saudi.tenant.form</field>
+            <field name="model">saudi.tenant</field>
+            <field name="arch" type="xml">
+                <form string="Tenant">
+                    <header>
+                        <button name="action_activate" string="Activate" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('status', '=', 'active')]}"/>
+                        <button name="action_suspend" string="Suspend" type="object"
+                            class="btn-danger"
+                            attrs="{'invisible': [('status', 'in', ['suspended', 'cancelled'])]}"/>
+                        <field name="status" widget="statusbar"
+                            statusbar_visible="pending,active,suspended"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                            <h3><field name="name_ar"/></h3>
+                        </div>
+                        <group>
+                            <group string="Company Info">
+                                <field name="tenant_code"/>
+                                <field name="cr_number"/>
+                                <field name="vat_number"/>
+                                <field name="company_id"/>
+                            </group>
+                            <group string="Admin Contact">
+                                <field name="admin_user_id"/>
+                                <field name="admin_email"/>
+                                <field name="admin_phone"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Subscription">
+                                <field name="plan"/>
+                                <field name="subscription_start"/>
+                                <field name="subscription_expiry"/>
+                            </group>
+                            <group string="Usage">
+                                <field name="user_count"/>
+                                <field name="invoice_count"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_saudi_tenant" model="ir.actions.act_window">
+            <field name="name">Tenants</field>
+            <field name="res_model">saudi.tenant</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Main Saudi ERP Menu -->
+        <menuitem id="menu_saudi_erp_root"
+            name="Saudi ERP"
+            sequence="10"
+            web_icon="saudi_erp_base,static/src/img/menu_icon.png"/>
+
+        <menuitem id="menu_saudi_erp_dashboard"
+            name="Dashboard"
+            parent="menu_saudi_erp_root"
+            sequence="1"
+            action="saudi_erp_dashboard.action_main_dashboard"/>
+
+        <!-- SaaS Admin -->
+        <menuitem id="menu_saudi_erp_saas"
+            name="SaaS Management"
+            parent="menu_saudi_erp_root"
+            sequence="90"
+            groups="group_saudi_erp_saas_admin"/>
+
+        <menuitem id="menu_saudi_tenant"
+            name="Tenants"
+            parent="menu_saudi_erp_saas"
+            action="action_saudi_tenant"
+            groups="group_saudi_erp_saas_admin"/>
+    </data>
+</odoo>

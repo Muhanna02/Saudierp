@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pos_receipt_saudi" inherit_id="point_of_sale.pos_receipt_base_template">
+        <xpath expr="//div[hasclass('pos-receipt')]" position="inside">
+            <!-- Arabic Company Name -->
+            <t t-if="receipt.company.name_ar">
+                <div class="text-center" dir="rtl" style="font-family: Tajawal, Arial; font-size: 14px; font-weight: bold;">
+                    <t t-esc="receipt.company.name_ar"/>
+                </div>
+            </t>
+
+            <!-- Branch Name -->
+            <t t-if="receipt.config.branch_name_ar">
+                <div class="text-center" dir="rtl" style="font-size: 11px;">
+                    <t t-esc="receipt.config.branch_name_ar"/>
+                </div>
+            </t>
+
+            <!-- VAT Number -->
+            <t t-if="receipt.company.zatca_vat_number">
+                <div class="text-center" style="font-size: 10px;">
+                    VAT No: <t t-esc="receipt.company.zatca_vat_number"/>
+                </div>
+                <div class="text-center" dir="rtl" style="font-size: 10px;">
+                    رقم ضريبة القيمة المضافة: <t t-esc="receipt.company.zatca_vat_number"/>
+                </div>
+            </t>
+
+            <hr/>
+
+            <!-- Payment Methods in Arabic -->
+            <div dir="rtl" style="font-size: 10px;">
+                <t t-foreach="receipt.paymentlines" t-as="payline">
+                    <div class="pos-receipt-right-align">
+                        <span><t t-esc="payline.name"/></span>
+                        <span><t t-esc="payline.amount"/> ر.س</span>
+                    </div>
+                </t>
+            </div>
+
+            <!-- ZATCA QR Code -->
+            <t t-if="receipt.zatca_qr_code">
+                <div class="text-center" style="margin-top: 10px;">
+                    <div style="font-size: 9px; color: #666;">ZATCA QR Code / رمز الاستجابة السريعة</div>
+                    <!-- QR rendered by POS JS -->
+                    <div class="zatca-qr-placeholder"
+                        t-att-data-qr="receipt.zatca_qr_code"
+                        style="width:100px; height:100px; margin: 0 auto; border: 1px solid #ccc;">
+                    </div>
+                </div>
+            </t>
+
+            <div class="text-center" dir="rtl" style="font-size: 9px; margin-top: 8px; color: #666;">
+                شكراً لزيارتكم • Thank you for your visit
+            </div>
+        </xpath>
+    </template>
+</odoo>

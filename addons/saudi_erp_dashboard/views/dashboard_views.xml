@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Main Dashboard Action -->
+        <record id="action_main_dashboard" model="ir.actions.client">
+            <field name="name">Saudi ERP Dashboard</field>
+            <field name="tag">saudi_erp_dashboard.main_dashboard</field>
+            <field name="target">main</field>
+        </record>
+
+        <!-- OWL Dashboard Template -->
+        <template id="MainDashboard" inherit_id="False">
+            <t t-name="saudi_erp_dashboard.MainDashboard">
+                <div class="saudi-dashboard" t-att-dir="state.currentLang === 'ar' ? 'rtl' : 'ltr'">
+
+                    <!-- Loading State -->
+                    <t t-if="state.loading">
+                        <div class="kpi-grid">
+                            <t t-foreach="[1,2,3,4,5]" t-as="i">
+                                <div class="kpi-card">
+                                    <div class="loading-skeleton" style="height: 80px;"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+
+                    <t t-else="">
+                        <!-- Subscription Banner -->
+                        <div class="subscription-banner" t-if="state.data">
+                            <div class="banner-content">
+                                <div class="banner-title">
+                                    Welcome to Saudi ERP / مرحباً بك في السعودية ERP
+                                </div>
+                                <div class="banner-desc">
+                                    <span t-esc="state.data.company.name"/> •
+                                    <span t-esc="getCurrentDate()"/> |
+                                    <span t-esc="getHijriDate()"/>
+                                </div>
+                            </div>
+                            <div class="banner-plan">
+                                <div class="plan-name">
+                                    <t t-esc="(state.data.company.subscription_plan or 'Trial').toUpperCase()"/>
+                                </div>
+                                <div class="plan-expiry" t-if="state.data.company.subscription_expiry">
+                                    Expires: <t t-esc="state.data.company.subscription_expiry"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dashboard Header -->
+                        <div class="dashboard-header">
+                            <div>
+                                <h2 class="page-title">Dashboard / لوحة التحكم</h2>
+                                <p class="page-subtitle">Real-time business overview</p>
+                            </div>
+                            <div class="header-actions">
+                                <!-- Hijri/Gregorian Date -->
+                                <div class="saudi-date-widget">
+                                    <span class="gregorian-date" t-esc="getCurrentDate()"/>
+                                    <span class="date-divider">|</span>
+                                    <span class="hijri-date" t-esc="getHijriDate()"/>
+                                </div>
+                                <button class="btn-saudi-secondary" t-on-click="refreshData">
+                                    ↻ Refresh
+                                </button>
+                                <button class="btn-saudi-secondary" t-on-click="toggleLanguage">
+                                    <t t-if="state.currentLang === 'en'">عربي</t>
+                                    <t t-else="">English</t>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Alerts -->
+                        <t t-if="state.data">
+                            <div class="alert-panel" t-if="state.data.employees.expired_iqama > 0 or state.data.kpis.pending_zatca > 0">
+                                <t t-if="state.data.employees.expired_iqama > 0">
+                                    <div class="alert-item danger">
+                                        <div class="alert-icon">⚠️</div>
+                                        <div class="alert-content">
+                                            <div class="alert-title">Expired Iqama / إقامات منتهية</div>
+                                            <div class="alert-desc">
+                                                <t t-esc="state.data.employees.expired_iqama"/> employees have expired Iqama. Action required immediately.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="state.data.employees.expiring_iqama > 0">
+                                    <div class="alert-item warning">
+                                        <div class="alert-icon">🔔</div>
+                                        <div class="alert-content">
+                                            <div class="alert-title">Expiring Iqama (within 90 days)</div>
+                                            <div class="alert-desc">
+                                                <t t-esc="state.data.employees.expiring_iqama"/> Iqamas expiring soon
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="state.data.kpis.pending_zatca > 0">
+                                    <div class="alert-item info">
+                                        <div class="alert-icon">📋</div>
+                                        <div class="alert-content">
+                                            <div class="alert-title">Pending ZATCA Submission</div>
+                                            <div class="alert-desc">
+                                                <t t-esc="state.data.kpis.pending_zatca"/> invoices not yet submitted to ZATCA
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+
+                        <!-- KPI Cards -->
+                        <div class="kpi-grid" t-if="state.data">
+                            <!-- Revenue -->
+                            <div class="kpi-card green">
+                                <div class="kpi-header">
+                                    <div class="kpi-icon">💰</div>
+                                    <span t-attf-class="kpi-badge #{revenueGrowthClass}">
+                                        <t t-esc="revenueGrowthIcon"/>
+                                        <t t-esc="Math.abs(state.data.kpis.revenue_growth)"/>%
+                                    </span>
+                                </div>
+                                <div class="kpi-value">
+                                    SAR <t t-esc="formattedRevenue"/>
+                                </div>
+                                <div class="kpi-label">Revenue This Month / الإيرادات</div>
+                                <div class="kpi-sublabel">vs last month</div>
+                            </div>
+
+                            <!-- VAT -->
+                            <div class="kpi-card orange">
+                                <div class="kpi-header">
+                                    <div class="kpi-icon">🏛️</div>
+                                </div>
+                                <div class="kpi-value">
+                                    SAR <t t-esc="formattedVAT"/>
+                                </div>
+                                <div class="kpi-label">VAT Collected (15%) / ضريبة القيمة المضافة</div>
+                                <div class="kpi-sublabel">This month</div>
+                            </div>
+
+                            <!-- Outstanding -->
+                            <div class="kpi-card blue">
+                                <div class="kpi-header">
+                                    <div class="kpi-icon">📄</div>
+                                    <span class="kpi-badge neutral">
+                                        <t t-esc="state.data.kpis.outstanding_count"/> invoices
+                                    </span>
+                                </div>
+                                <div class="kpi-value">
+                                    SAR <t t-esc="(state.data.kpis.outstanding_amount || 0).toLocaleString('en-SA', {minimumFractionDigits: 2})"/>
+                                </div>
+                                <div class="kpi-label">Outstanding / المستحقات</div>
+                                <div class="kpi-sublabel">Unpaid invoices</div>
+                            </div>
+
+                            <!-- Employees -->
+                            <div class="kpi-card purple">
+                                <div class="kpi-header">
+                                    <div class="kpi-icon">👥</div>
+                                </div>
+                                <div class="kpi-value">
+                                    <t t-esc="state.data.employees.total"/>
+                                </div>
+                                <div class="kpi-label">Total Employees / الموظفون</div>
+                                <div class="kpi-sublabel">
+                                    <t t-esc="state.data.employees.saudi"/> Saudi •
+                                    <t t-esc="state.data.employees.expat"/> Expat
+                                </div>
+                            </div>
+
+                            <!-- ZATCA Status -->
+                            <div class="kpi-card green">
+                                <div class="kpi-header">
+                                    <div class="kpi-icon">📱</div>
+                                    <span t-attf-class="zatca-phase-badge #{zatcaStatusClass}">
+                                        <t t-esc="zatcaStatusLabel"/>
+                                    </span>
+                                </div>
+                                <div class="kpi-value">
+                                    <t t-esc="state.data.kpis.pending_zatca"/>
+                                </div>
+                                <div class="kpi-label">Pending ZATCA Invoices</div>
+                                <div class="kpi-sublabel">Not yet submitted</div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Grid -->
+                        <div class="chart-grid" t-if="state.data">
+                            <!-- Revenue Chart -->
+                            <div class="chart-card">
+                                <div class="card-header">
+                                    <div>
+                                        <div class="card-title">Revenue Trend / اتجاه الإيرادات</div>
+                                        <div class="card-subtitle">Last 6 months</div>
+                                    </div>
+                                </div>
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="saudi-revenue-chart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Saudization Donut -->
+                            <div class="chart-card">
+                                <div class="card-header">
+                                    <div>
+                                        <div class="card-title">Saudization (Nitaqat)</div>
+                                        <div class="card-subtitle">نطاقات التوطين</div>
+                                    </div>
+                                </div>
+                                <div style="position:relative; height: 160px;">
+                                    <canvas id="saudi-nitaqat-chart"></canvas>
+                                </div>
+                                <div style="text-align:center; margin-top: 8px;">
+                                    <span style="font-size: 28px; font-weight: 700; color: #1a7a4e;">
+                                        <t t-esc="state.data.employees.saudization_pct"/>%
+                                    </span>
+                                    <div style="font-size: 12px; color: #6b7a8d;">Saudization Rate</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="quick-actions-bar">
+                            <a class="quick-action-btn" t-on-click="() => navigateTo('account.action_move_out_invoice_type')">
+                                <span class="btn-icon">➕</span> New Invoice / فاتورة جديدة
+                            </a>
+                            <a class="quick-action-btn" t-on-click="() => navigateTo('saudi_erp_accounting.action_zatca_setup')">
+                                <span class="btn-icon">🔧</span> ZATCA Setup
+                            </a>
+                            <a class="quick-action-btn" t-on-click="() => navigateTo('saudi_erp_hr.action_eos_wizard')">
+                                <span class="btn-icon">📊</span> EOS Calculator
+                            </a>
+                            <a class="quick-action-btn" t-on-click="() => navigateTo('saudi_erp_hr.action_gosi_wizard')">
+                                <span class="btn-icon">🏥</span> GOSI Report
+                            </a>
+                            <a class="quick-action-btn" t-on-click="() => navigateTo('point_of_sale.action_pos_config')">
+                                <span class="btn-icon">🛒</span> POS Config
+                            </a>
+                        </div>
+
+                        <!-- Recent Invoices Table -->
+                        <div class="data-table-card" t-if="state.recentInvoices.length">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">Recent Invoices / الفواتير الأخيرة</div>
+                                </div>
+                                <button class="btn-saudi-secondary"
+                                    t-on-click="() => navigateTo('account.action_move_out_invoice_type')">
+                                    View All →
+                                </button>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount (SAR)</th>
+                                        <th>Status</th>
+                                        <th>ZATCA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.recentInvoices" t-as="inv">
+                                        <tr>
+                                            <td><strong><t t-esc="inv.name"/></strong></td>
+                                            <td><t t-esc="inv.partner"/></td>
+                                            <td><t t-esc="inv.date"/></td>
+                                            <td>
+                                                <t t-esc="inv.amount.toLocaleString('en-SA', {minimumFractionDigits: 2})"/>
+                                            </td>
+                                            <td>
+                                                <span t-attf-class="status-badge #{getPaymentStateBadge(inv.payment_state)}">
+                                                    <t t-esc="inv.payment_state.replace('_', ' ')"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span t-attf-class="status-badge #{getZatcaBadge(inv.zatca_status)}">
+                                                    <t t-esc="inv.zatca_status.replace('_', ' ')"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </t>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_registration_confirm" model="mail.template">
+            <field name="name">Saudi ERP - Registration Confirmation</field>
+            <field name="model_id" ref="saudi_erp_base.model_saudi_tenant"/>
+            <field name="email_to">{{ object.admin_email }}</field>
+            <field name="subject">Welcome to Saudi ERP - Your Account is Ready / مرحباً بك في Saudi ERP</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background: linear-gradient(135deg, #0f1923, #145f3d); border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 24px;">
+        <h1 style="color: white; margin: 0; font-size: 28px;">🇸🇦 Saudi ERP</h1>
+        <p style="color: rgba(255,255,255,0.8); margin-top: 8px;">Your account is ready!</p>
+    </div>
+
+    <div style="background: #f4f6f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+        <h2 style="color: #1a2332; margin-top: 0;">Welcome, {{ object.name }}!</h2>
+        <p style="color: #6b7a8d;">Your Saudi ERP account has been created successfully.</p>
+
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 8px 0; color: #6b7a8d;">Tenant Code:</td>
+                <td style="padding: 8px 0; font-weight: bold;">{{ object.tenant_code }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px 0; color: #6b7a8d;">Plan:</td>
+                <td style="padding: 8px 0; font-weight: bold;">{{ object.plan }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px 0; color: #6b7a8d;">Expires:</td>
+                <td style="padding: 8px 0;">{{ object.subscription_expiry }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align: center; margin: 24px 0;">
+        <a href="/web"
+           style="background: #1a7a4e; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+            Go to Dashboard / الذهاب للوحة التحكم →
+        </a>
+    </div>
+
+    <div dir="rtl" style="background: #fff3cd; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+        <h3 style="color: #856404; margin-top: 0;">مرحباً بك في Saudi ERP</h3>
+        <p style="color: #6b7a8d;">تم إنشاء حسابك بنجاح. يمكنك الآن البدء في استخدام النظام.</p>
+        <p><strong>رمز المستأجر:</strong> {{ object.tenant_code }}</p>
+    </div>
+
+    <p style="color: #9aa8b8; font-size: 12px; text-align: center;">
+        Saudi ERP • Built for Saudi Arabia • مصمم للمملكة العربية السعودية
+    </p>
+</div>
+            ]]></field>
+            <field name="auto_delete">True</field>
+        </record>
+    </data>
+</odoo>

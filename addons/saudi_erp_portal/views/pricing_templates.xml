@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="pricing_page" name="Saudi ERP Pricing">
+            <t t-call="website.layout">
+                <div class="saudi-pricing-page">
+                    <div class="container py-5">
+                        <div class="text-center mb-5">
+                            <h1>Simple Pricing / أسعار بسيطة</h1>
+                            <p>All prices in Saudi Riyals (SAR) • جميع الأسعار بالريال السعودي</p>
+                        </div>
+
+                        <div class="pricing-comparison-grid">
+
+                            <!-- Trial -->
+                            <div class="pricing-card-full">
+                                <div class="plan-header">
+                                    <div class="plan-icon">🆓</div>
+                                    <h3>Trial / تجريبي</h3>
+                                    <div class="price-tag">Free</div>
+                                    <div class="price-period">14 days • لا يوجد بطاقة ائتمان</div>
+                                    <a href="/register?plan=trial" class="btn-plan-full">Start Free Trial</a>
+                                </div>
+                                <div class="plan-features-full">
+                                    <div class="feature-row included">✓ 5 Users</div>
+                                    <div class="feature-row included">✓ Accounting (ZATCA Phase 1)</div>
+                                    <div class="feature-row included">✓ Saudi HR (GOSI + EOS)</div>
+                                    <div class="feature-row included">✓ Arabic Interface</div>
+                                    <div class="feature-row excluded">✗ POS</div>
+                                    <div class="feature-row excluded">✗ ZATCA Phase 2</div>
+                                    <div class="feature-row excluded">✗ Priority Support</div>
+                                </div>
+                            </div>
+
+                            <!-- Starter -->
+                            <div class="pricing-card-full featured">
+                                <div class="plan-badge-top">Most Popular</div>
+                                <div class="plan-header">
+                                    <div class="plan-icon">🚀</div>
+                                    <h3>Starter / مبتدئ</h3>
+                                    <div class="price-tag">500 <span>SAR</span></div>
+                                    <div class="price-period">per month / شهرياً</div>
+                                    <a href="/register?plan=starter" class="btn-plan-full featured">Get Started</a>
+                                </div>
+                                <div class="plan-features-full">
+                                    <div class="feature-row included">✓ 10 Users</div>
+                                    <div class="feature-row included">✓ Full Accounting + ZATCA Phase 1 &amp; 2</div>
+                                    <div class="feature-row included">✓ Saudi HR + GOSI + EOS + Iqama</div>
+                                    <div class="feature-row included">✓ Saudi POS (Mada, STC Pay)</div>
+                                    <div class="feature-row included">✓ Arabic + English</div>
+                                    <div class="feature-row included">✓ Custom Dashboard</div>
+                                    <div class="feature-row excluded">✗ Inventory Management</div>
+                                    <div class="feature-row excluded">✗ Dedicated Support</div>
+                                </div>
+                            </div>
+
+                            <!-- Professional -->
+                            <div class="pricing-card-full">
+                                <div class="plan-header">
+                                    <div class="plan-icon">💼</div>
+                                    <h3>Professional / احترافي</h3>
+                                    <div class="price-tag">1,500 <span>SAR</span></div>
+                                    <div class="price-period">per month / شهرياً</div>
+                                    <a href="/register?plan=professional" class="btn-plan-full">Get Started</a>
+                                </div>
+                                <div class="plan-features-full">
+                                    <div class="feature-row included">✓ 50 Users</div>
+                                    <div class="feature-row included">✓ Everything in Starter</div>
+                                    <div class="feature-row included">✓ Inventory + Purchasing</div>
+                                    <div class="feature-row included">✓ Manufacturing</div>
+                                    <div class="feature-row included">✓ CRM + Sales</div>
+                                    <div class="feature-row included">✓ ZATCA Full Integration</div>
+                                    <div class="feature-row included">✓ Priority Support (4h SLA)</div>
+                                    <div class="feature-row included">✓ Zakat Declaration</div>
+                                </div>
+                            </div>
+
+                            <!-- Enterprise -->
+                            <div class="pricing-card-full enterprise">
+                                <div class="plan-header">
+                                    <div class="plan-icon">🏢</div>
+                                    <h3>Enterprise / مؤسسي</h3>
+                                    <div class="price-tag">Custom</div>
+                                    <div class="price-period">Contact us / تواصل معنا</div>
+                                    <a href="/contact" class="btn-plan-full">Contact Sales</a>
+                                </div>
+                                <div class="plan-features-full">
+                                    <div class="feature-row included">✓ Unlimited Users</div>
+                                    <div class="feature-row included">✓ All Professional Features</div>
+                                    <div class="feature-row included">✓ Custom Development</div>
+                                    <div class="feature-row included">✓ On-premise option</div>
+                                    <div class="feature-row included">✓ Dedicated Account Manager</div>
+                                    <div class="feature-row included">✓ 24/7 Support</div>
+                                    <div class="feature-row included">✓ SLA Guarantee</div>
+                                    <div class="feature-row included">✓ Data Migration</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- FAQ Section -->
+                        <div class="faq-section mt-5">
+                            <h3 class="text-center mb-4">Frequently Asked Questions</h3>
+                            <div class="faq-item">
+                                <h5>Is this system ZATCA certified?</h5>
+                                <p>Yes. Our system supports ZATCA Phase 1 (invoice generation) and Phase 2 (clearance &amp; reporting) for both B2B and B2C transactions.</p>
+                            </div>
+                            <div class="faq-item" dir="rtl">
+                                <h5>هل النظام معتمد من زاتكا؟</h5>
+                                <p>نعم. يدعم نظامنا المرحلة الأولى والثانية من الفوترة الإلكترونية لهيئة زاتكا.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Can I import data from my existing system?</h5>
+                                <p>Yes, we provide data migration assistance for Professional and Enterprise plans.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>What payment methods are accepted for subscription?</h5>
+                                <p>We accept Mada, Visa/Mastercard, and bank transfer (SADAD). All payments in SAR.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

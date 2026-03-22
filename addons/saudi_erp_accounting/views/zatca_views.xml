@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ZATCA Log Views -->
+        <record id="view_zatca_log_tree" model="ir.ui.view">
+            <field name="name">zatca.log.tree</field>
+            <field name="model">zatca.log</field>
+            <field name="arch" type="xml">
+                <tree string="ZATCA Logs" decoration-danger="status=='failed'" decoration-success="status=='success'">
+                    <field name="name"/>
+                    <field name="move_id"/>
+                    <field name="submission_type"/>
+                    <field name="status"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_zatca_log" model="ir.actions.act_window">
+            <field name="name">ZATCA Submission Log</field>
+            <field name="res_model">zatca.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- ZATCA Setup Action -->
+        <record id="action_zatca_setup" model="ir.actions.act_window">
+            <field name="name">ZATCA Setup Wizard</field>
+            <field name="res_model">zatca.onboarding.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="menu_saudi_accounting"
+            name="Saudi Accounting (المحاسبة)"
+            parent="saudi_erp_base.menu_saudi_erp_root"
+            sequence="20"/>
+
+        <menuitem id="menu_zatca_setup"
+            name="ZATCA Setup (إعداد زاتكا)"
+            parent="menu_saudi_accounting"
+            action="action_zatca_setup"
+            sequence="10"/>
+
+        <menuitem id="menu_zatca_log"
+            name="ZATCA Logs (سجلات زاتكا)"
+            parent="menu_saudi_accounting"
+            action="action_zatca_log"
+            sequence="20"/>
+    </data>
+</odoo>

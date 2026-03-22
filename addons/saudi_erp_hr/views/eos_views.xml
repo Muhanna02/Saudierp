@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_eos_tree" model="ir.ui.view">
+            <field name="name">hr.eos.benefit.tree</field>
+            <field name="model">hr.eos.benefit</field>
+            <field name="arch" type="xml">
+                <tree string="End of Service Benefits"
+                    decoration-success="state=='paid'"
+                    decoration-warning="state=='confirmed'"
+                    decoration-muted="state=='cancelled'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="joining_date"/>
+                    <field name="termination_date"/>
+                    <field name="years_of_service"/>
+                    <field name="termination_reason"/>
+                    <field name="eos_amount"/>
+                    <field name="net_eos"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_eos_form" model="ir.ui.view">
+            <field name="name">hr.eos.benefit.form</field>
+            <field name="model">hr.eos.benefit</field>
+            <field name="arch" type="xml">
+                <form string="End of Service Benefit - مكافأة نهاية الخدمة">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_pay" string="Mark as Paid" type="object"
+                            class="btn-success"
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,confirmed,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group string="Employee Details">
+                                <field name="employee_id"/>
+                                <field name="joining_date"/>
+                                <field name="termination_date"/>
+                                <field name="termination_reason"/>
+                                <field name="years_of_service"/>
+                                <field name="months_of_service"/>
+                            </group>
+                            <group string="Salary Basis">
+                                <field name="last_basic_salary"/>
+                                <field name="last_housing_allowance"/>
+                                <field name="eos_salary_basis"/>
+                            </group>
+                        </group>
+                        <group string="EOS Calculation (حساب مكافأة نهاية الخدمة)">
+                            <group>
+                                <field name="eos_multiplier"/>
+                                <field name="eos_amount"/>
+                            </group>
+                            <group>
+                                <field name="advance_deduction"/>
+                                <field name="other_deductions"/>
+                                <field name="net_eos" readonly="1"
+                                    class="font-weight-bold"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_eos_benefit" model="ir.actions.act_window">
+            <field name="name">End of Service Benefits (مكافأة نهاية الخدمة)</field>
+            <field name="res_model">hr.eos.benefit</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_eos_wizard" model="ir.actions.act_window">
+            <field name="name">Calculate EOS</field>
+            <field name="res_model">hr.eos.calculator.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_eos_benefits"
+            name="End of Service (نهاية الخدمة)"
+            parent="menu_saudi_hr"
+            action="action_eos_benefit"
+            sequence="30"/>
+
+        <menuitem id="menu_eos_calculator"
+            name="EOS Calculator"
+            parent="menu_saudi_hr"
+            action="action_eos_wizard"
+            sequence="35"/>
+    </data>
+</odoo>

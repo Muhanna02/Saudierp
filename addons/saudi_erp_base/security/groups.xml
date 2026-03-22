@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Saudi ERP Category -->
+        <record id="module_category_saudi_erp" model="ir.module.category">
+            <field name="name">Saudi ERP</field>
+            <field name="description">Saudi ERP Modules</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <!-- Groups -->
+        <record id="group_saudi_erp_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_saudi_erp"/>
+        </record>
+
+        <record id="group_saudi_erp_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_saudi_erp"/>
+            <field name="implied_ids" eval="[(4, ref('group_saudi_erp_user'))]"/>
+        </record>
+
+        <record id="group_saudi_erp_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_saudi_erp"/>
+            <field name="implied_ids" eval="[(4, ref('group_saudi_erp_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')),(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- SaaS Admin Group -->
+        <record id="group_saudi_erp_saas_admin" model="res.groups">
+            <field name="name">SaaS Platform Administrator</field>
+            <field name="category_id" ref="module_category_saudi_erp"/>
+            <field name="users" eval="[(4, ref('base.user_root')),(4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

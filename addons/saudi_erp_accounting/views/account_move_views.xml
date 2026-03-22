@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_saudi" model="ir.ui.view">
+            <field name="name">account.move.form.saudi</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- ZATCA Status Bar -->
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="zatca_status" widget="statusbar"
+                        statusbar_visible="not_submitted,submitted,accepted,cleared"
+                        attrs="{'invisible': [('move_type', 'not in', ['out_invoice','out_refund'])]}"/>
+                </xpath>
+
+                <!-- ZATCA Tab in Invoice -->
+                <xpath expr="//page[@name='other_tab']" position="after">
+                    <page name="zatca_tab" string="ZATCA / الفوترة الإلكترونية"
+                        attrs="{'invisible': [('move_type', 'not in', ['out_invoice','out_refund','in_invoice'])]}">
+                        <group>
+                            <group string="ZATCA Details">
+                                <field name="zatca_invoice_type"/>
+                                <field name="zatca_uuid"/>
+                                <field name="zatca_status"/>
+                                <field name="zatca_clearance_status"/>
+                                <field name="invoice_sequence_number"/>
+                            </group>
+                            <group string="Supply Details">
+                                <field name="supply_date"/>
+                                <field name="supply_end_date"/>
+                                <field name="payment_means_code"/>
+                            </group>
+                        </group>
+                        <group string="QR Code">
+                            <field name="zatca_qr_code_str" string="QR Data (Base64 TLV)"/>
+                        </group>
+                        <group string="ZATCA Response" attrs="{'invisible': [('zatca_response', '=', False)]}">
+                            <field name="zatca_response" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <!-- ZATCA Action Buttons -->
+                <xpath expr="//button[@name='action_post']" position="after">
+                    <button name="action_generate_zatca_qr" string="Generate QR Code"
+                        type="object" class="btn-secondary"
+                        attrs="{'invisible': [('move_type', 'not in', ['out_invoice','out_refund']),
+                                             ('state', '!=', 'posted')]}"/>
+                    <button name="action_submit_zatca" string="Submit to ZATCA"
+                        type="object" class="btn-primary"
+                        attrs="{'invisible': [('move_type', 'not in', ['out_invoice','out_refund']),
+                                             ('state', '!=', 'posted'),
+                                             ('zatca_status', 'in', ['accepted','cleared'])]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

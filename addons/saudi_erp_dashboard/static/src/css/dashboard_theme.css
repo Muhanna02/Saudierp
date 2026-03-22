@@ -1,0 +1,254 @@
+/* ============================================================
+   Saudi ERP - Custom Admin Dashboard Theme
+   Replaces Odoo default backend with modern SaaS admin look
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Primary Brand Colors */
+    --saudi-green: #1a7a4e;
+    --saudi-green-light: #22a362;
+    --saudi-green-dark: #145f3d;
+    --saudi-gold: #c9a84c;
+    --saudi-gold-light: #e8c46a;
+
+    /* UI Colors */
+    --sidebar-bg: #0f1923;
+    --sidebar-hover: #1a2a38;
+    --sidebar-active: #1a7a4e;
+    --sidebar-text: #a8b9c8;
+    --sidebar-text-active: #ffffff;
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 70px;
+
+    /* Content Area */
+    --content-bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --card-radius: 12px;
+    --border-color: #e8ecf1;
+
+    /* Text */
+    --text-primary: #1a2332;
+    --text-secondary: #6b7a8d;
+    --text-muted: #9aa8b8;
+
+    /* Status Colors */
+    --success: #1a7a4e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+
+    /* Header */
+    --header-height: 64px;
+    --header-bg: #ffffff;
+    --header-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ========================
+   GLOBAL RESET & BASE
+   ======================== */
+* { box-sizing: border-box; }
+
+body, .o_web_client {
+    font-family: 'Inter', 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--content-bg);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+}
+
+/* Arabic text support */
+.arabic, [lang="ar"], [dir="rtl"] {
+    font-family: 'Tajawal', 'Arial', sans-serif;
+}
+
+/* ========================
+   ODOO BACKEND OVERRIDE
+   ======================== */
+.o_web_client .o_main_navbar {
+    background: var(--header-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: var(--header-shadow) !important;
+    height: var(--header-height) !important;
+    padding: 0 20px !important;
+}
+
+.o_main_navbar .o_menu_brand {
+    color: var(--saudi-green) !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+}
+
+.o_main_navbar .o_menu_brand img {
+    height: 36px;
+}
+
+/* ========================
+   CUSTOM SIDEBAR
+   ======================== */
+.o_action_manager,
+.o_home_menu {
+    margin-left: 0 !important;
+}
+
+/* Saudi ERP Sidebar */
+.saudi-sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    transition: width 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3a4a transparent;
+}
+
+.saudi-sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.saudi-sidebar::-webkit-scrollbar { width: 4px; }
+.saudi-sidebar::-webkit-scrollbar-track { background: transparent; }
+.saudi-sidebar::-webkit-scrollbar-thumb { background: #2a3a4a; border-radius: 2px; }
+
+/* Sidebar Brand Logo */
+.saudi-sidebar .sidebar-brand {
+    padding: 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.saudi-sidebar .sidebar-brand .brand-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--saudi-green);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+
+.saudi-sidebar .sidebar-brand .brand-name {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.saudi-sidebar .sidebar-brand .brand-subtitle {
+    color: var(--sidebar-text);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* Sidebar Nav Items */
+.saudi-sidebar .nav-section {
+    padding: 12px 0 4px;
+}
+
+.saudi-sidebar .nav-section-title {
+    padding: 4px 16px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(168, 185, 200, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.saudi-sidebar .nav-item {
+    padding: 2px 8px;
+}
+
+.saudi-sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.saudi-sidebar .nav-link:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+.saudi-sidebar .nav-link.active {
+    background: var(--saudi-green);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(26, 122, 78, 0.4);
+}
+
+.saudi-sidebar .nav-link .nav-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.saudi-sidebar .nav-link .nav-text {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+}
+
+.saudi-sidebar .nav-link .nav-badge {
+    background: var(--danger);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* Sidebar Company Info */
+.saudi-sidebar .sidebar-company {
+    padding: 12px 16px;
+    margin: 8px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.saudi-sidebar .sidebar-company .company-name {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.saudi-sidebar .sidebar-company .company-plan {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(26, 122, 78, 0.3);
+    color: #4ade80;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}

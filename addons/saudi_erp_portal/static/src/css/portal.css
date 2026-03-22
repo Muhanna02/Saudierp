@@ -1,0 +1,830 @@
+/* ============================================================
+   Saudi ERP Portal CSS - Homepage & Registration
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --saudi-green: #1a7a4e;
+    --saudi-green-light: #22a362;
+    --saudi-gold: #c9a84c;
+    --dark-bg: #0f1923;
+    --card-radius: 12px;
+}
+
+/* ========================
+   HOMEPAGE HERO
+   ======================== */
+.saudi-portal-home {
+    font-family: 'Inter', 'Tajawal', sans-serif;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0f1923 0%, #1a2a38 50%, #0d2518 100%);
+    padding: 80px 0 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(26, 122, 78, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(201, 168, 76, 0.1) 0%, transparent 40%);
+}
+
+.hero-section .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(26, 122, 78, 0.15);
+    border: 1px solid rgba(26, 122, 78, 0.3);
+    color: #4ade80;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.hero-title-ar {
+    font-family: 'Tajawal', Arial;
+    font-size: 28px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #1a7a4e, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 480px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    background: var(--saudi-green);
+    color: white !important;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-hero-primary:hover {
+    background: #22a362;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26, 122, 78, 0.4);
+}
+
+.btn-hero-secondary {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.85) !important;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none !important;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-hero-secondary:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.hero-trust {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-trust span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+}
+
+/* Dashboard Preview Card */
+.dashboard-preview {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.preview-header {
+    background: rgba(255,255,255,0.04);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.preview-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.preview-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+}
+
+.preview-title {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+}
+
+.preview-kpis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+}
+
+.preview-kpi {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.pkpi-icon { font-size: 20px; }
+.pkpi-value { font-size: 16px; font-weight: 700; color: white; }
+.pkpi-label { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+.preview-kpi.green { border-top: 2px solid #1a7a4e; }
+.preview-kpi.orange { border-top: 2px solid #f59e0b; }
+.preview-kpi.blue { border-top: 2px solid #3b82f6; }
+.preview-kpi.purple { border-top: 2px solid #8b5cf6; }
+
+/* Mini Chart */
+.preview-chart {
+    padding: 16px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 80px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.chart-bar {
+    flex: 1;
+    background: rgba(26, 122, 78, 0.3);
+    border-radius: 4px 4px 0 0;
+    transition: background 0.2s;
+}
+
+.chart-bar.active {
+    background: rgba(26, 122, 78, 0.8);
+}
+
+/* ========================
+   FEATURES SECTION
+   ======================== */
+.features-section {
+    padding: 80px 0;
+    background: #f8faf8;
+}
+
+.features-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.section-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 8px;
+}
+
+.section-header p {
+    font-size: 16px;
+    color: #6b7a8d;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .hero-section .container { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .hero-title { font-size: 32px; }
+}
+
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid #e8ecf1;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border-color: var(--saudi-green);
+}
+
+.feature-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: #6b7a8d;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ========================
+   PRICING SECTION
+   ======================== */
+.pricing-preview-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.pricing-preview-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #6b7a8d;
+    margin-bottom: 40px;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto 32px;
+}
+
+.pricing-card {
+    background: white;
+    border: 2px solid #e8ecf1;
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.pricing-card.featured {
+    border-color: var(--saudi-green);
+    position: relative;
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(26, 122, 78, 0.15);
+}
+
+.plan-badge {
+    background: var(--saudi-green);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.plan-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 8px;
+}
+
+.plan-price {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--saudi-green);
+    margin-bottom: 16px;
+}
+
+.plan-price small {
+    font-size: 14px;
+    color: #6b7a8d;
+    font-weight: 400;
+}
+
+.plan-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    text-align: left;
+}
+
+.plan-features-list li {
+    padding: 6px 0;
+    font-size: 13px;
+    color: #6b7a8d;
+}
+
+.btn-plan {
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none !important;
+    background: #f4f6f9;
+    color: #1a2332 !important;
+    transition: all 0.2s;
+    border: 2px solid #e8ecf1;
+}
+
+.btn-plan-featured {
+    background: var(--saudi-green) !important;
+    color: white !important;
+    border-color: var(--saudi-green) !important;
+}
+
+.view-all-pricing {
+    font-size: 14px;
+    color: var(--saudi-green);
+    text-decoration: none !important;
+    font-weight: 500;
+}
+
+/* ========================
+   CTA SECTION
+   ======================== */
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #0f1923 0%, #145f3d 100%);
+}
+
+.cta-section h2 {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.cta-section h3 {
+    color: rgba(255,255,255,0.6);
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Tajawal', Arial;
+    margin-bottom: 28px;
+}
+
+.btn-cta {
+    display: inline-block;
+    background: var(--saudi-green);
+    color: white !important;
+    padding: 16px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none !important;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+
+.btn-cta:hover {
+    background: #22a362;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 122, 78, 0.4);
+}
+
+.cta-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+}
+
+/* ========================
+   REGISTRATION PAGE
+   ======================== */
+.saudi-register-page {
+    min-height: 100vh;
+    background: #f4f6f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.register-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1000px;
+    width: 100%;
+    gap: 40px;
+    align-items: start;
+}
+
+.register-left {
+    padding: 40px 0;
+}
+
+.register-brand {
+    margin-bottom: 40px;
+}
+
+.brand-logo-large {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.register-brand h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a2332;
+    margin-bottom: 6px;
+}
+
+.register-brand p {
+    color: #6b7a8d;
+    font-size: 15px;
+}
+
+.register-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.benefit-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.benefit-item strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 2px;
+}
+
+.benefit-item p {
+    font-size: 13px;
+    color: #6b7a8d;
+    margin: 0;
+}
+
+.register-form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 36px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border: 1px solid #e8ecf1;
+}
+
+.form-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 24px;
+    line-height: 1.3;
+}
+
+.form-title-ar {
+    display: block;
+    font-family: 'Tajawal', Arial;
+    font-size: 16px;
+    color: #6b7a8d;
+    font-weight: 400;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1a2332;
+    transition: border-color 0.2s;
+    background: #fafafa;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--saudi-green);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26, 122, 78, 0.1);
+}
+
+/* Plan Radio Buttons */
+.plan-radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.plan-radio {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    display: block;
+}
+
+.plan-radio:hover {
+    border-color: var(--saudi-green);
+}
+
+.plan-radio.selected,
+.plan-radio input:checked + .plan-radio-name {
+    border-color: var(--saudi-green);
+    background: rgba(26, 122, 78, 0.05);
+}
+
+.plan-radio input[type="radio"] {
+    display: none;
+}
+
+.plan-radio-name {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a2332;
+}
+
+.plan-radio-price {
+    display: block;
+    font-size: 11px;
+    color: #6b7a8d;
+    margin-top: 2px;
+}
+
+.form-check {
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #6b7a8d;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.btn-register-submit {
+    width: 100%;
+    background: var(--saudi-green);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+}
+
+.btn-register-submit:hover {
+    background: #22a362;
+    transform: translateY(-1px);
+}
+
+.register-footer-note {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7a8d;
+}
+
+/* ========================
+   PRICING PAGE (Full)
+   ======================== */
+.saudi-pricing-page {
+    font-family: 'Inter', 'Tajawal', sans-serif;
+}
+
+.pricing-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.pricing-card-full {
+    background: white;
+    border: 2px solid #e8ecf1;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.pricing-card-full.featured {
+    border-color: var(--saudi-green);
+    box-shadow: 0 8px 30px rgba(26, 122, 78, 0.12);
+}
+
+.pricing-card-full.enterprise {
+    background: linear-gradient(135deg, #0f1923, #1a2a38);
+}
+
+.plan-badge-top {
+    background: var(--saudi-green);
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px;
+}
+
+.plan-header {
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.plan-icon { font-size: 32px; margin-bottom: 12px; }
+
+.pricing-card-full .plan-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 12px;
+}
+
+.pricing-card-full.enterprise .plan-name { color: white; }
+
+.price-tag {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--saudi-green);
+    margin-bottom: 4px;
+}
+
+.price-tag span {
+    font-size: 14px;
+    color: #6b7a8d;
+    font-weight: 400;
+}
+
+.pricing-card-full.enterprise .price-tag { color: #c9a84c; }
+
+.price-period {
+    font-size: 12px;
+    color: #9aa8b8;
+    margin-bottom: 16px;
+}
+
+.btn-plan-full {
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none !important;
+    text-align: center;
+    background: #f4f6f9;
+    color: #1a2332 !important;
+    transition: all 0.2s;
+    border: 2px solid #e8ecf1;
+}
+
+.btn-plan-full.featured {
+    background: var(--saudi-green) !important;
+    color: white !important;
+    border-color: var(--saudi-green) !important;
+}
+
+.plan-features-full {
+    padding: 16px 20px;
+    border-top: 1px solid #f0f4f8;
+}
+
+.feature-row {
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(232, 236, 241, 0.6);
+}
+
+.feature-row.included { color: #1a7a4e; }
+.feature-row.excluded { color: #9aa8b8; }
+
+.pricing-card-full.enterprise .feature-row.included { color: #4ade80; }
+
+.faq-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid #e8ecf1;
+}
+
+.faq-item h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 8px;
+}
+
+.faq-item p {
+    font-size: 14px;
+    color: #6b7a8d;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Success Page */
+.success-icon { font-size: 64px; margin: 40px 0 20px; }
+
+/* Subscription Info */
+.subscription-info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e8ecf1;
+}
+
+@media (max-width: 768px) {
+    .register-container { grid-template-columns: 1fr; }
+    .register-left { display: none; }
+    .pricing-comparison-grid { grid-template-columns: 1fr; }
+    .plan-radio-group { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+}

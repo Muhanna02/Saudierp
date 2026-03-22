@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_zatca_wizard_form" model="ir.ui.view">
+            <field name="name">zatca.onboarding.wizard.form</field>
+            <field name="model">zatca.onboarding.wizard</field>
+            <field name="arch" type="xml">
+                <form string="ZATCA Setup - إعداد زاتكا">
+                    <sheet>
+                        <div class="alert alert-info" role="alert">
+                            <strong>ZATCA E-Invoicing Setup</strong><br/>
+                            Configure your company for Saudi Arabia ZATCA compliance.
+                            Ensure you have completed registration at <b>fatoora.zatca.gov.sa</b>
+                        </div>
+                        <group>
+                            <field name="phase"/>
+                            <field name="environment"/>
+                            <field name="vat_number" placeholder="300XXXXXXXXXXX3"/>
+                            <field name="otp"
+                                attrs="{'invisible': [('phase','!=','phase2')],
+                                        'required': [('phase','=','phase2')]}"
+                                placeholder="6-digit OTP from Fatoora portal"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_configure_zatca" string="Configure ZATCA"
+                            type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

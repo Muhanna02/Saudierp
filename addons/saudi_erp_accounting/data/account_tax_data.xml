@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Saudi VAT 15% -->
+        <record id="tax_vat_15_sale" model="account.tax">
+            <field name="name">VAT 15% - Sales (ضريبة القيمة المضافة 15٪)</field>
+            <field name="amount">15.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="zatca_category_code">S</field>
+            <field name="description">VAT15</field>
+        </record>
+
+        <record id="tax_vat_15_purchase" model="account.tax">
+            <field name="name">VAT 15% - Purchase (ضريبة القيمة المضافة 15٪)</field>
+            <field name="amount">15.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="zatca_category_code">S</field>
+            <field name="description">VAT15P</field>
+        </record>
+
+        <!-- Zero Rate -->
+        <record id="tax_vat_0_sale" model="account.tax">
+            <field name="name">VAT 0% - Zero Rate Sales</field>
+            <field name="amount">0.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="zatca_category_code">Z</field>
+        </record>
+
+        <!-- Exempt -->
+        <record id="tax_vat_exempt" model="account.tax">
+            <field name="name">VAT Exempt</field>
+            <field name="amount">0.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">sale</field>
+            <field name="zatca_category_code">E</field>
+        </record>
+
+        <!-- WHT 5% Rent -->
+        <record id="tax_wht_rent_5" model="account.tax">
+            <field name="name">WHT 5% - Rent (ضريبة الاستقطاع - إيجار)</field>
+            <field name="amount">-5.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="description">WHT5R</field>
+        </record>
+
+        <!-- WHT 5% Services -->
+        <record id="tax_wht_services_5" model="account.tax">
+            <field name="name">WHT 5% - Services (ضريبة الاستقطاع - خدمات)</field>
+            <field name="amount">-5.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="description">WHT5S</field>
+        </record>
+
+        <!-- WHT 15% Non-resident -->
+        <record id="tax_wht_nonresident_15" model="account.tax">
+            <field name="name">WHT 15% - Non-Resident Services</field>
+            <field name="amount">-15.0</field>
+            <field name="amount_type">percent</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="description">WHT15NR</field>
+        </record>
+    </data>
+</odoo>

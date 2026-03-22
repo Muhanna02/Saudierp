@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Saudi Chart of Accounts Template -->
+        <record id="saudi_chart_template" model="account.chart.template">
+            <field name="name">Saudi Arabia - SOCPA Chart of Accounts</field>
+            <field name="currency_id" ref="base.SAR"/>
+            <field name="spoken_languages">ar_001</field>
+            <field name="bank_account_code_prefix">1020</field>
+            <field name="cash_account_code_prefix">1010</field>
+            <field name="transfer_account_code_prefix">1015</field>
+        </record>
+
+        <!-- ASSETS (الأصول) -->
+        <record id="account_1000" model="account.account.template">
+            <field name="name">Current Assets (الأصول المتداولة)</field>
+            <field name="code">1000</field>
+            <field name="account_type">asset_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_1010" model="account.account.template">
+            <field name="name">Cash (النقدية)</field>
+            <field name="code">1010</field>
+            <field name="account_type">asset_cash</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_1020" model="account.account.template">
+            <field name="name">Bank (البنك)</field>
+            <field name="code">1020</field>
+            <field name="account_type">asset_cash</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_1100" model="account.account.template">
+            <field name="name">Accounts Receivable (الذمم المدينة)</field>
+            <field name="code">1100</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="account_1200" model="account.account.template">
+            <field name="name">Inventory (المخزون)</field>
+            <field name="code">1200</field>
+            <field name="account_type">asset_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_1300" model="account.account.template">
+            <field name="name">VAT Receivable - Input Tax (ضريبة القيمة المضافة المدخلات)</field>
+            <field name="code">1300</field>
+            <field name="account_type">asset_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_2000" model="account.account.template">
+            <field name="name">Fixed Assets (الأصول الثابتة)</field>
+            <field name="code">2000</field>
+            <field name="account_type">asset_non_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+
+        <!-- LIABILITIES (الالتزامات) -->
+        <record id="account_3000" model="account.account.template">
+            <field name="name">Current Liabilities (الالتزامات المتداولة)</field>
+            <field name="code">3000</field>
+            <field name="account_type">liability_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_3100" model="account.account.template">
+            <field name="name">Accounts Payable (الذمم الدائنة)</field>
+            <field name="code">3100</field>
+            <field name="account_type">liability_payable</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="account_3200" model="account.account.template">
+            <field name="name">VAT Payable - Output Tax (ضريبة القيمة المضافة المخرجات)</field>
+            <field name="code">3200</field>
+            <field name="account_type">liability_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_3300" model="account.account.template">
+            <field name="name">GOSI Payable (مستحقات التأمينات الاجتماعية)</field>
+            <field name="code">3300</field>
+            <field name="account_type">liability_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_3400" model="account.account.template">
+            <field name="name">Zakat Payable (الزكاة المستحقة)</field>
+            <field name="code">3400</field>
+            <field name="account_type">liability_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_3500" model="account.account.template">
+            <field name="name">Employee End of Service Benefits (مكافأة نهاية الخدمة)</field>
+            <field name="code">3500</field>
+            <field name="account_type">liability_non_current</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+
+        <!-- EQUITY (حقوق الملكية) -->
+        <record id="account_4000" model="account.account.template">
+            <field name="name">Owner's Equity (حقوق الملكية)</field>
+            <field name="code">4000</field>
+            <field name="account_type">equity</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+
+        <!-- REVENUE (الإيرادات) -->
+        <record id="account_5000" model="account.account.template">
+            <field name="name">Sales Revenue (إيرادات المبيعات)</field>
+            <field name="code">5000</field>
+            <field name="account_type">income</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+
+        <!-- EXPENSES (المصروفات) -->
+        <record id="account_6000" model="account.account.template">
+            <field name="name">Cost of Sales (تكلفة المبيعات)</field>
+            <field name="code">6000</field>
+            <field name="account_type">expense</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_6100" model="account.account.template">
+            <field name="name">Salaries and Wages (الرواتب والأجور)</field>
+            <field name="code">6100</field>
+            <field name="account_type">expense</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+        <record id="account_6200" model="account.account.template">
+            <field name="name">GOSI Expense - Employer (اشتراكات التأمينات الاجتماعية)</field>
+            <field name="code">6200</field>
+            <field name="account_type">expense</field>
+            <field name="chart_template_id" ref="saudi_chart_template"/>
+        </record>
+    </data>
+</odoo>

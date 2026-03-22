@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_gosi_contribution_tree" model="ir.ui.view">
+            <field name="name">gosi.contribution.tree</field>
+            <field name="model">gosi.contribution</field>
+            <field name="arch" type="xml">
+                <tree string="GOSI Contributions">
+                    <field name="employee_id"/>
+                    <field name="period_date"/>
+                    <field name="nationality_category"/>
+                    <field name="gosi_salary"/>
+                    <field name="employee_contribution"/>
+                    <field name="employer_contribution"/>
+                    <field name="total_contribution"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_gosi_contribution_form" model="ir.ui.view">
+            <field name="name">gosi.contribution.form</field>
+            <field name="model">gosi.contribution</field>
+            <field name="arch" type="xml">
+                <form string="GOSI Contribution">
+                    <header>
+                        <button name="action_submit_gosi" string="Submit to GOSI"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="period_date"/>
+                                <field name="nationality_category"/>
+                            </group>
+                            <group>
+                                <field name="basic_salary"/>
+                                <field name="housing_allowance"/>
+                                <field name="gosi_salary"/>
+                            </group>
+                        </group>
+                        <group string="Contributions">
+                            <group>
+                                <field name="employee_contribution"/>
+                                <field name="employer_contribution"/>
+                            </group>
+                            <group>
+                                <field name="total_contribution"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_gosi_contribution" model="ir.actions.act_window">
+            <field name="name">GOSI Contributions (التأمينات الاجتماعية)</field>
+            <field name="res_model">gosi.contribution</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_gosi_wizard" model="ir.actions.act_window">
+            <field name="name">Generate GOSI Report</field>
+            <field name="res_model">gosi.monthly.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="menu_saudi_hr"
+            name="Saudi HR (الموارد البشرية)"
+            parent="saudi_erp_base.menu_saudi_erp_root"
+            sequence="30"/>
+
+        <menuitem id="menu_iqama_tracker"
+            name="Iqama Tracker (متابعة الإقامات)"
+            parent="menu_saudi_hr"
+            action="action_iqama_tracker"
+            sequence="10"/>
+
+        <menuitem id="menu_gosi_contributions"
+            name="GOSI Contributions (التأمينات)"
+            parent="menu_saudi_hr"
+            action="action_gosi_contribution"
+            sequence="20"/>
+
+        <menuitem id="menu_gosi_wizard"
+            name="Generate GOSI Report"
+            parent="menu_saudi_hr"
+            action="action_gosi_wizard"
+            sequence="25"/>
+    </data>
+</odoo>

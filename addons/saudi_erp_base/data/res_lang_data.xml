@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="lang_ar_001" model="res.lang">
+            <field name="name">Arabic / العربية</field>
+            <field name="code">ar_001</field>
+            <field name="iso_code">ar</field>
+            <field name="active">True</field>
+            <field name="direction">rtl</field>
+        </record>
+    </data>
+</odoo>

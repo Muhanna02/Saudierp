@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_employee_form_saudi" model="ir.ui.view">
+            <field name="name">hr.employee.form.saudi</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Nationality Category badge -->
+                <xpath expr="//field[@name='job_title']" position="after">
+                    <field name="nationality_category" widget="badge"
+                        decoration-success="nationality_category == 'saudi'"
+                        decoration-info="nationality_category == 'gcc'"
+                        decoration-warning="nationality_category == 'expat'"/>
+                </xpath>
+
+                <!-- Saudi HR Tab -->
+                <xpath expr="//page[@name='private_information']" position="after">
+                    <page name="saudi_hr" string="Saudi HR / الموارد البشرية">
+                        <group>
+                            <group string="Identification (الهوية)">
+                                <field name="saudi_national_id"
+                                    attrs="{'required': [('nationality_category', '=', 'saudi')]}"/>
+                                <field name="national_id_expiry"/>
+                                <field name="iqama_number"
+                                    attrs="{'required': [('nationality_category', '=', 'expat')],
+                                            'invisible': [('nationality_category', '=', 'saudi')]}"/>
+                                <field name="iqama_expiry"
+                                    attrs="{'invisible': [('nationality_category', '=', 'saudi')]}"/>
+                                <field name="iqama_status" widget="badge"
+                                    decoration-success="iqama_status == 'valid'"
+                                    decoration-warning="iqama_status == 'expiring_soon'"
+                                    decoration-danger="iqama_status == 'expired'"
+                                    attrs="{'invisible': [('nationality_category', '=', 'saudi')]}"/>
+                                <field name="work_permit_number"
+                                    attrs="{'invisible': [('nationality_category', '=', 'saudi')]}"/>
+                                <field name="work_permit_expiry"
+                                    attrs="{'invisible': [('nationality_category', '=', 'saudi')]}"/>
+                            </group>
+                            <group string="GOSI">
+                                <field name="gosi_number"/>
+                                <field name="gosi_registered"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Employment (التوظيف)">
+                                <field name="joining_date"/>
+                                <field name="probation_end_date"/>
+                                <field name="contract_type"/>
+                                <field name="contract_end_date"
+                                    attrs="{'invisible': [('contract_type', '!=', 'limited')]}"/>
+                                <field name="annual_leave_days"/>
+                                <field name="is_saudi_count" string="Saudization Count"/>
+                            </group>
+                            <group string="Salary (الراتب)">
+                                <field name="basic_salary"/>
+                                <field name="housing_allowance"/>
+                                <field name="transport_allowance"/>
+                                <field name="other_allowances"/>
+                                <field name="total_salary" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Expiring Iqama Alert View -->
+        <record id="view_employee_iqama_tree" model="ir.ui.view">
+            <field name="name">hr.employee.iqama.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <tree string="Iqama Status"
+                    decoration-danger="iqama_status == 'expired'"
+                    decoration-warning="iqama_status == 'expiring_soon'">
+                    <field name="name"/>
+                    <field name="nationality_category"/>
+                    <field name="iqama_number"/>
+                    <field name="iqama_expiry"/>
+                    <field name="iqama_status"/>
+                    <field name="work_permit_number"/>
+                    <field name="work_permit_expiry"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_iqama_tracker" model="ir.actions.act_window">
+            <field name="name">Iqama Tracker (متابعة الإقامات)</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_employee_iqama_tree"/>
+            <field name="domain">[('nationality_category', '=', 'expat')]</field>
+        </record>
+    </data>
+</odoo>

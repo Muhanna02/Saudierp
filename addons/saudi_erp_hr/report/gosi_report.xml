@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="report_gosi_monthly"
+            string="GOSI Monthly Statement"
+            model="gosi.contribution"
+            report_type="qweb-pdf"
+            name="saudi_erp_hr.report_gosi_template"
+            file="saudi_erp_hr.report_gosi_template"/>
+
+        <template id="report_gosi_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h3>GOSI Contribution Statement - كشف التأمينات الاجتماعية</h3>
+                            <table class="table table-bordered">
+                                <tr><td>Employee</td><td><t t-esc="doc.employee_id.name"/></td></tr>
+                                <tr><td>Period</td><td><t t-esc="doc.period_date"/></td></tr>
+                                <tr><td>GOSI Salary</td><td><t t-esc="'%.2f' % doc.gosi_salary"/> SAR</td></tr>
+                                <tr><td>Employee Contribution (10%)</td><td><t t-esc="'%.2f' % doc.employee_contribution"/> SAR</td></tr>
+                                <tr><td>Employer Contribution</td><td><t t-esc="'%.2f' % doc.employer_contribution"/> SAR</td></tr>
+                                <tr class="table-primary"><td><strong>Total</strong></td><td><strong><t t-esc="'%.2f' % doc.total_contribution"/> SAR</strong></td></tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

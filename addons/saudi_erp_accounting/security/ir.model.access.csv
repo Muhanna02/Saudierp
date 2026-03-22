@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zatca_log_manager,zatca.log manager,model_zatca_log,account.group_account_manager,1,1,1,1
+access_zatca_log_user,zatca.log user,model_zatca_log,account.group_account_user,1,0,0,0
+access_zatca_wizard_user,zatca.wizard user,model_zatca_onboarding_wizard,account.group_account_manager,1,1,1,1

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_company_form_saudi" model="ir.ui.view">
+            <field name="name">res.company.form.saudi</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page name="saudi_info" string="Saudi Arabia / المملكة العربية السعودية">
+                        <group string="Business Registration (التسجيل التجاري)">
+                            <field name="cr_number"/>
+                            <field name="unified_national_number"/>
+                            <field name="gosi_registration"/>
+                            <field name="chamber_membership"/>
+                        </group>
+                        <group string="ZATCA E-Invoicing (الفوترة الإلكترونية - زاتكا)">
+                            <field name="zatca_vat_number"/>
+                            <field name="zatca_status"/>
+                            <field name="zatca_api_url" attrs="{'invisible': [('zatca_status', '=', 'not_registered')]}"/>
+                            <field name="zatca_otp" attrs="{'invisible': [('zatca_status', '!=', 'phase2')]}"/>
+                        </group>
+                        <group string="SaaS Subscription">
+                            <field name="subscription_plan"/>
+                            <field name="subscription_start"/>
+                            <field name="subscription_expiry"/>
+                            <field name="max_users"/>
+                            <field name="tenant_code"/>
+                        </group>
+                        <group string="Locale Settings">
+                            <field name="hijri_calendar"/>
+                            <field name="saudi_timezone"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

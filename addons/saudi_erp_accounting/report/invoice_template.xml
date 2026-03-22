@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="font-family: 'Tajawal', 'Arial', sans-serif;">
+
+                            <!-- Bilingual Header -->
+                            <div class="row mb-4">
+                                <div class="col-6 text-left">
+                                    <h2>Tax Invoice</h2>
+                                    <p class="text-muted">Original Copy</p>
+                                </div>
+                                <div class="col-6 text-right" dir="rtl">
+                                    <h2>فاتورة ضريبية</h2>
+                                    <p class="text-muted">النسخة الأصلية</p>
+                                </div>
+                            </div>
+
+                            <!-- Company Info -->
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong><t t-esc="doc.company_id.name"/></strong><br/>
+                                    <t t-esc="doc.company_id.street"/><br/>
+                                    <t t-esc="doc.company_id.city"/>, Saudi Arabia<br/>
+                                    VAT No: <t t-esc="doc.company_id.zatca_vat_number or doc.company_id.vat"/>
+                                </div>
+                                <div class="col-6 text-right" dir="rtl">
+                                    <table class="table table-bordered table-sm">
+                                        <tr>
+                                            <td>Invoice No. / رقم الفاتورة</td>
+                                            <td><strong><t t-esc="doc.name"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date / التاريخ</td>
+                                            <td><t t-esc="doc.invoice_date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Type / النوع</td>
+                                            <td><t t-esc="dict(doc.fields_get(['zatca_invoice_type'])['zatca_invoice_type']['selection'])[doc.zatca_invoice_type]" t-if="doc.zatca_invoice_type"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Customer Info -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="border p-2">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <strong>Bill To / فاتورة إلى:</strong><br/>
+                                                <t t-esc="doc.partner_id.name"/><br/>
+                                                <t t-if="doc.partner_id.vat_registration">
+                                                    VAT: <t t-esc="doc.partner_id.vat_registration"/>
+                                                </t>
+                                            </div>
+                                            <div class="col-6 text-right" dir="rtl">
+                                                <t t-esc="doc.partner_id.name_ar or doc.partner_id.name"/><br/>
+                                                <t t-if="doc.partner_id.cr_number">
+                                                    س.ت: <t t-esc="doc.partner_id.cr_number"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Lines -->
+                            <table class="table table-striped table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Description / الوصف</th>
+                                        <th>Qty / الكمية</th>
+                                        <th>Unit Price / سعر الوحدة</th>
+                                        <th>VAT % / الضريبة</th>
+                                        <th>Amount / المبلغ (SAR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                                        <tr>
+                                            <td><t t-esc="line_index + 1"/></td>
+                                            <td><t t-esc="line.name"/></td>
+                                            <td><t t-esc="line.quantity"/></td>
+                                            <td><t t-esc="'%.2f' % line.price_unit"/></td>
+                                            <td><t t-foreach="line.tax_ids" t-as="tax"><t t-esc="tax.amount"/>%</t></td>
+                                            <td><t t-esc="'%.2f' % line.price_subtotal"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><strong>Subtotal / المجموع الفرعي:</strong></td>
+                                        <td><t t-esc="'%.2f' % doc.amount_untaxed"/> SAR</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><strong>VAT 15% / ضريبة القيمة المضافة:</strong></td>
+                                        <td><t t-esc="'%.2f' % doc.amount_tax"/> SAR</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td colspan="5" class="text-right"><strong>TOTAL / الإجمالي:</strong></td>
+                                        <td><strong><t t-esc="'%.2f' % doc.amount_total"/> SAR</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <!-- QR Code -->
+                            <div class="row mt-4">
+                                <div class="col-4">
+                                    <t t-if="doc.zatca_qr_code_str">
+                                        <img t-att-src="'data:image/png;base64,' + doc.zatca_qr_code_str"
+                                            style="width:120px;height:120px;" alt="ZATCA QR"/>
+                                        <p class="text-muted small">ZATCA QR Code</p>
+                                    </t>
+                                </div>
+                                <div class="col-8 text-right" dir="rtl">
+                                    <p class="text-muted small">
+                                        هذه الفاتورة مستوفية لمتطلبات الفوترة الإلكترونية وفق اشتراطات هيئة الزكاة والضريبة والجمارك
+                                    </p>
+                                    <p class="text-muted small">
+                                        This invoice complies with ZATCA e-invoicing requirements
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

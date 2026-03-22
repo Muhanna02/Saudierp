@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="report_eos_benefit"
+            string="End of Service Certificate"
+            model="hr.eos.benefit"
+            report_type="qweb-pdf"
+            name="saudi_erp_hr.report_eos_template"
+            file="saudi_erp_hr.report_eos_template"
+            print_report_name="'EOS - %s' % object.employee_id.name"/>
+
+        <template id="report_eos_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="font-family: 'Tajawal', Arial, sans-serif;">
+                            <div class="row text-center mb-4">
+                                <div class="col-12">
+                                    <h2>End of Service Benefit Certificate</h2>
+                                    <h2 dir="rtl">شهادة مكافأة نهاية الخدمة</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Employee:</strong> <t t-esc="doc.employee_id.name"/><br/>
+                                    <strong>Joining Date:</strong> <t t-esc="doc.joining_date"/><br/>
+                                    <strong>Termination Date:</strong> <t t-esc="doc.termination_date"/><br/>
+                                    <strong>Years of Service:</strong> <t t-esc="'%.2f' % doc.years_of_service"/>
+                                </div>
+                                <div class="col-6" dir="rtl">
+                                    <strong>الموظف:</strong> <t t-esc="doc.employee_id.name"/><br/>
+                                    <strong>تاريخ التعيين:</strong> <t t-esc="doc.joining_date"/><br/>
+                                    <strong>تاريخ الإنهاء:</strong> <t t-esc="doc.termination_date"/><br/>
+                                    <strong>سنوات الخدمة:</strong> <t t-esc="'%.2f' % doc.years_of_service"/>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>Basic Salary / الراتب الأساسي</td>
+                                            <td class="text-right"><t t-esc="'%.2f' % doc.last_basic_salary"/> SAR</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Housing Allowance / بدل السكن</td>
+                                            <td class="text-right"><t t-esc="'%.2f' % doc.last_housing_allowance"/> SAR</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EOS Salary Basis / أساس حساب المكافأة</td>
+                                            <td class="text-right"><t t-esc="'%.2f' % doc.eos_salary_basis"/> SAR</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EOS Gratuity / مكافأة نهاية الخدمة</td>
+                                            <td class="text-right"><strong><t t-esc="'%.2f' % doc.eos_amount"/> SAR</strong></td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td><strong>Net EOS Payable / صافي المستحق</strong></td>
+                                            <td class="text-right"><strong><t t-esc="'%.2f' % doc.net_eos"/> SAR</strong></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <p class="text-muted small mt-3">
+                                Calculated per Saudi Labor Law Article 84 | محسوبة وفقاً للمادة 84 من نظام العمل السعودي
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

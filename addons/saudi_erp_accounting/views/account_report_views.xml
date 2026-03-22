@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_saudi_vat_report"
+            name="VAT Return (الإقرار الضريبي)"
+            parent="menu_saudi_accounting"
+            sequence="30"/>
+
+        <menuitem id="menu_saudi_zakat_report"
+            name="Zakat Declaration (إقرار الزكاة)"
+            parent="menu_saudi_accounting"
+            sequence="40"/>
+    </data>
+</odoo>

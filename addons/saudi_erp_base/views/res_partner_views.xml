@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_form_saudi" model="ir.ui.view">
+            <field name="name">res.partner.form.saudi</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="vat_registration" string="VAT No. (ZATCA)" placeholder="300XXXXXXXXXXX3"/>
+                    <field name="cr_number" string="Commercial Registration No."/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="name_ar" string="Arabic Name (الاسم)"/>
+                </xpath>
+                <xpath expr="//field[@name='street2']" position="after">
+                    <field name="district" string="District (الحي)"/>
+                    <field name="building_number" string="Building No."/>
+                    <field name="additional_number" string="Additional No."/>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']" position="after">
+                    <page name="saudi_id" string="Saudi ID / الهوية">
+                        <group>
+                            <field name="id_type"/>
+                            <field name="national_id"/>
+                            <field name="id_expiry"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

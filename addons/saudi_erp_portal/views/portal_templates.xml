@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Base Layout Override -->
+        <template id="portal_layout" inherit_id="website.layout">
+            <xpath expr="//head" position="inside">
+                <link rel="preconnect" href="https://fonts.googleapis.com"/>
+                <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+            </xpath>
+        </template>
+
+        <!-- Homepage -->
+        <template id="homepage" name="Saudi ERP Homepage">
+            <t t-call="website.layout">
+                <div id="wrap" class="saudi-portal-home">
+
+                    <!-- Hero Section -->
+                    <section class="hero-section">
+                        <div class="hero-bg-pattern"></div>
+                        <div class="container">
+                            <div class="hero-content">
+                                <div class="hero-badge">
+                                    🇸🇦 Built for Saudi Arabia • مصمم للمملكة العربية السعودية
+                                </div>
+                                <h1 class="hero-title">
+                                    The Complete ERP<br/>
+                                    <span class="text-gradient">for Saudi Business</span>
+                                </h1>
+                                <h2 class="hero-title-ar" dir="rtl">
+                                    نظام إدارة موارد المؤسسات<br/>
+                                    <span class="text-gradient">للأعمال السعودية</span>
+                                </h2>
+                                <p class="hero-desc">
+                                    ZATCA-compliant e-invoicing, Saudi HR &amp; GOSI, POS with Mada &amp; STC Pay.
+                                    All in one powerful platform with a beautiful modern dashboard.
+                                </p>
+                                <div class="hero-actions">
+                                    <a href="/register?plan=trial" class="btn-hero-primary">
+                                        Start Free Trial / جرب مجاناً →
+                                    </a>
+                                    <a href="/pricing" class="btn-hero-secondary">
+                                        View Pricing / عرض الأسعار
+                                    </a>
+                                </div>
+                                <div class="hero-trust">
+                                    <span>✓ ZATCA Certified</span>
+                                    <span>✓ Saudi Labor Law</span>
+                                    <span>✓ No setup fees</span>
+                                    <span>✓ Arabic Support</span>
+                                </div>
+                            </div>
+                            <div class="hero-visual">
+                                <div class="dashboard-preview">
+                                    <div class="preview-header">
+                                        <div class="preview-dots">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                        <span class="preview-title">Saudi ERP Dashboard</span>
+                                    </div>
+                                    <div class="preview-kpis">
+                                        <div class="preview-kpi green">
+                                            <div class="pkpi-icon">💰</div>
+                                            <div>
+                                                <div class="pkpi-value">SAR 285,400</div>
+                                                <div class="pkpi-label">Revenue / الإيرادات</div>
+                                            </div>
+                                        </div>
+                                        <div class="preview-kpi orange">
+                                            <div class="pkpi-icon">🏛️</div>
+                                            <div>
+                                                <div class="pkpi-value">SAR 42,810</div>
+                                                <div class="pkpi-label">VAT 15%</div>
+                                            </div>
+                                        </div>
+                                        <div class="preview-kpi blue">
+                                            <div class="pkpi-icon">👥</div>
+                                            <div>
+                                                <div class="pkpi-value">47</div>
+                                                <div class="pkpi-label">Employees</div>
+                                            </div>
+                                        </div>
+                                        <div class="preview-kpi purple">
+                                            <div class="pkpi-icon">📱</div>
+                                            <div>
+                                                <div class="pkpi-value">Phase 2</div>
+                                                <div class="pkpi-label">ZATCA Status</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="preview-chart">
+                                        <div class="chart-bar" style="height: 60%;"></div>
+                                        <div class="chart-bar" style="height: 80%;"></div>
+                                        <div class="chart-bar" style="height: 45%;"></div>
+                                        <div class="chart-bar" style="height: 90%;"></div>
+                                        <div class="chart-bar" style="height: 70%;"></div>
+                                        <div class="chart-bar active" style="height: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Features Section -->
+                    <section class="features-section">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2>Everything You Need / كل ما تحتاجه</h2>
+                                <p>Built specifically for Saudi Arabia regulations and business practices</p>
+                            </div>
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon">📋</div>
+                                    <h3>ZATCA E-Invoicing</h3>
+                                    <p>Phase 1 &amp; Phase 2 compliant. Auto-generate XML invoices, QR codes, and submit to Fatoora portal.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">💼</div>
+                                    <h3>Saudi HR &amp; Payroll</h3>
+                                    <p>GOSI calculations, Iqama tracking, End of Service per Labor Law Article 84, WPS payroll file.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🛒</div>
+                                    <h3>Saudi POS</h3>
+                                    <p>Mada, STC Pay, Apple Pay. Arabic receipts with ZATCA QR. VAT 15% auto-applied.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">📊</div>
+                                    <h3>Modern Dashboard</h3>
+                                    <p>Beautiful admin UI with KPIs, charts, Saudization tracking, and real-time alerts.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🌐</div>
+                                    <h3>Arabic First</h3>
+                                    <p>Full RTL Arabic interface, Hijri calendar, bilingual reports and documents.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">☁️</div>
+                                    <h3>Cloud SaaS</h3>
+                                    <p>Multi-tenant cloud platform. No servers needed. Start in minutes. Saudi data residency.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pricing Preview -->
+                    <section class="pricing-preview-section">
+                        <div class="container text-center">
+                            <h2>Simple, Transparent Pricing / أسعار بسيطة وواضحة</h2>
+                            <p class="section-subtitle">Pay in Saudi Riyals. Cancel anytime.</p>
+                            <div class="pricing-grid">
+                                <div class="pricing-card">
+                                    <div class="plan-name">Trial / تجريبي</div>
+                                    <div class="plan-price">مجاناً<br/><small>14 days</small></div>
+                                    <ul class="plan-features-list">
+                                        <li>✓ 5 Users</li>
+                                        <li>✓ Accounting + HR</li>
+                                        <li>✓ ZATCA Phase 1</li>
+                                    </ul>
+                                    <a href="/register?plan=trial" class="btn-plan">Start Free Trial</a>
+                                </div>
+                                <div class="pricing-card featured">
+                                    <div class="plan-badge">Most Popular</div>
+                                    <div class="plan-name">Starter / مبتدئ</div>
+                                    <div class="plan-price">500 SAR<br/><small>/month</small></div>
+                                    <ul class="plan-features-list">
+                                        <li>✓ 10 Users</li>
+                                        <li>✓ Accounting + HR + POS</li>
+                                        <li>✓ ZATCA Phase 1 &amp; 2</li>
+                                        <li>✓ Arabic Support</li>
+                                    </ul>
+                                    <a href="/register?plan=starter" class="btn-plan btn-plan-featured">Get Started</a>
+                                </div>
+                                <div class="pricing-card">
+                                    <div class="plan-name">Professional / احترافي</div>
+                                    <div class="plan-price">1,500 SAR<br/><small>/month</small></div>
+                                    <ul class="plan-features-list">
+                                        <li>✓ 50 Users</li>
+                                        <li>✓ All Modules</li>
+                                        <li>✓ Full ZATCA Integration</li>
+                                        <li>✓ Priority Support</li>
+                                    </ul>
+                                    <a href="/register?plan=professional" class="btn-plan">Get Started</a>
+                                </div>
+                            </div>
+                            <a href="/pricing" class="view-all-pricing">View full pricing details →</a>
+                        </div>
+                    </section>
+
+                    <!-- CTA Section -->
+                    <section class="cta-section">
+                        <div class="container text-center">
+                            <h2>Ready to Streamline Your Saudi Business?</h2>
+                            <h3 dir="rtl">هل أنت مستعد لتحسين أعمالك السعودية؟</h3>
+                            <a href="/register?plan=trial" class="btn-cta">
+                                Start Your Free 14-Day Trial / ابدأ تجربتك المجانية
+                            </a>
+                            <p class="cta-sub">No credit card required • لا حاجة لبطاقة ائتمان</p>
+                        </div>
+                    </section>
+
+                </div>
+            </t>
+        </template>
+
+        <!-- Registration Success -->
+        <template id="registration_success" name="Registration Success">
+            <t t-call="website.layout">
+                <div class="container py-5 text-center">
+                    <div class="success-icon">✅</div>
+                    <h2>Registration Successful! / تم التسجيل بنجاح</h2>
+                    <p>
+                        Welcome to Saudi ERP! Your account has been created.<br/>
+                        Tenant Code: <strong><t t-esc="tenant.tenant_code"/></strong>
+                    </p>
+                    <p>Please check your email <strong><t t-esc="tenant.admin_email"/></strong> for your login credentials.</p>
+                    <a href="/web" class="btn-hero-primary">Go to Dashboard →</a>
+                </div>
+            </t>
+        </template>
+
+        <!-- Subscription Portal -->
+        <template id="subscription_portal" name="My Subscription">
+            <t t-call="website.layout">
+                <div class="container py-5">
+                    <h2>My Subscription / اشتراكي</h2>
+                    <t t-if="tenant">
+                        <div class="subscription-info-card">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Company:</strong> <t t-esc="tenant.name"/><br/>
+                                    <strong>Plan:</strong> <t t-esc="tenant.plan"/><br/>
+                                    <strong>Status:</strong> <t t-esc="tenant.status"/><br/>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Tenant Code:</strong> <t t-esc="tenant.tenant_code"/><br/>
+                                    <strong>Expires:</strong> <t t-esc="tenant.subscription_expiry"/><br/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <p>No subscription found. <a href="/register">Register here</a></p>
+                    </t>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

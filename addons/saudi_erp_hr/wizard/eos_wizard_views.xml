@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_eos_wizard_form" model="ir.ui.view">
+            <field name="name">hr.eos.calculator.wizard.form</field>
+            <field name="model">hr.eos.calculator.wizard</field>
+            <field name="arch" type="xml">
+                <form string="EOS Calculator - حاسبة نهاية الخدمة">
+                    <sheet>
+                        <div class="alert alert-info">
+                            <strong>End of Service Benefit Calculator</strong><br/>
+                            Calculated per Saudi Labor Law Article 84
+                        </div>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="termination_date"/>
+                            <field name="termination_reason"/>
+                        </group>
+                        <group string="Preview">
+                            <field name="joining_date" readonly="1"/>
+                            <field name="years_of_service" readonly="1"/>
+                            <field name="basic_salary" readonly="1"/>
+                            <field name="eos_amount_preview" readonly="1"
+                                class="font-weight-bold text-primary"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_create_eos" string="Create EOS Record"
+                            type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

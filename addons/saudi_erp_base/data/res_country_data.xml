@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Saudi Arabia regions / provinces -->
+        <record id="sa_region_riyadh" model="res.country.state">
+            <field name="name">Riyadh Region (منطقة الرياض)</field>
+            <field name="code">RY</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_makkah" model="res.country.state">
+            <field name="name">Makkah Region (منطقة مكة المكرمة)</field>
+            <field name="code">MK</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_madinah" model="res.country.state">
+            <field name="name">Madinah Region (منطقة المدينة المنورة)</field>
+            <field name="code">MD</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_qassim" model="res.country.state">
+            <field name="name">Al-Qassim Region (منطقة القصيم)</field>
+            <field name="code">QS</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_eastern" model="res.country.state">
+            <field name="name">Eastern Region (المنطقة الشرقية)</field>
+            <field name="code">ER</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_asir" model="res.country.state">
+            <field name="name">Asir Region (منطقة عسير)</field>
+            <field name="code">AS</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_tabuk" model="res.country.state">
+            <field name="name">Tabuk Region (منطقة تبوك)</field>
+            <field name="code">TB</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_hail" model="res.country.state">
+            <field name="name">Hail Region (منطقة حائل)</field>
+            <field name="code">HL</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_northern" model="res.country.state">
+            <field name="name">Northern Borders Region (منطقة الحدود الشمالية)</field>
+            <field name="code">NB</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_jizan" model="res.country.state">
+            <field name="name">Jizan Region (منطقة جازان)</field>
+            <field name="code">JZ</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_najran" model="res.country.state">
+            <field name="name">Najran Region (منطقة نجران)</field>
+            <field name="code">NJ</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_albaha" model="res.country.state">
+            <field name="name">Al-Baha Region (منطقة الباحة)</field>
+            <field name="code">AB</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        <record id="sa_region_jawf" model="res.country.state">
+            <field name="name">Al-Jawf Region (منطقة الجوف)</field>
+            <field name="code">AJ</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+    </data>
+</odoo>
